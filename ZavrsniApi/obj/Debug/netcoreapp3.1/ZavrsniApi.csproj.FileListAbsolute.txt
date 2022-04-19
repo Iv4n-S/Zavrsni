@@ -50,3 +50,8 @@ C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\Npgsql.Ent
 C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
 C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\AutoMapper.dll
 C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
+C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\Newtonsoft.Json.Bson.dll
+C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\obj\Debug\netcoreapp3.1\ZavrsniApi.csproj.CopyComplete

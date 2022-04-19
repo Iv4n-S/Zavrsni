@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +13,17 @@ namespace ZavrsniApi.Repos
         {
             _context = context;
         }
+
+        public void CreateUser(Userdata user)
+        {
+            if(user == null)
+            {
+                throw new ArgumentNullException(nameof(user));
+            }
+
+            _context.Userdata.Add(user);
+        }
+
         public IEnumerable<Userdata> GetAllUsers()
         {
             return _context.Userdata.ToList();
@@ -20,6 +32,21 @@ namespace ZavrsniApi.Repos
         public Userdata GetUserById(int id)
         {
             return _context.Userdata.FirstOrDefault(u => u.Iduser == id);
+        }
+
+        public bool SaveChanges()
+        {
+            return (_context.SaveChanges() >= 0);
+        }
+
+        public int GetLastUserId()
+        {
+            return _context.Userdata.OrderByDescending(u => u.Iduser).First().Iduser;
+        }
+
+        public void UpdateUser(Userdata user)
+        {
+            //Nothing
         }
     }
 }

@@ -7,7 +7,11 @@ namespace ZavrsniApi.Repos
 {
     public interface IUserRepo
     {
+        bool SaveChanges();
         IEnumerable<Userdata> GetAllUsers();
         Userdata GetUserById(int id);
+        void CreateUser(Userdata user);
+        int GetLastUserId();
+        void UpdateUser(Userdata user);
     }
 }

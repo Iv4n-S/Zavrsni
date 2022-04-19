@@ -12,6 +12,9 @@ namespace ZavrsniApi.Profiles
         public UsersProfile()
         {
             CreateMap<Userdata, UserDataDto>();
+            CreateMap<InsertUserDto, Userdata>();
+            CreateMap<UpdateUserDto, Userdata>();
+            CreateMap<Userdata, UpdateUserDto>();
         }
     }
 }

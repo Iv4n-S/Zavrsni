@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ZavrsniApi.Repos;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace ZavrsniApi.Controllers
 {
@@ -36,7 +37,7 @@ namespace ZavrsniApi.Controllers
 
 
         [HttpGet]
-        [Route("{id}")]
+        [Route("{id}", Name="GetUserdata")]
         public ActionResult<UserDataDto> GetUserdata(int id)
         {
             var result = _repository.GetUserById(id);
@@ -46,6 +47,65 @@ namespace ZavrsniApi.Controllers
             }
             return NotFound();
             
+        }
+
+        [HttpPost]
+        public ActionResult<UserDataDto> InsertUser(InsertUserDto user)
+        {
+            var userModel = _mapper.Map<Userdata>(user);
+            var lastUser = _repository.GetLastUserId();
+            userModel.Iduser = lastUser + 1;
+            userModel.Role = "user";
+            _repository.CreateUser(userModel);
+            _repository.SaveChanges();
+
+            var userDataModel = _mapper.Map<UserDataDto>(userModel);
+
+            return CreatedAtRoute(nameof(GetUserdata), new {id = userModel.Iduser }, userDataModel);
+        }
+
+        [HttpPut("{id}")]
+        public ActionResult UpdateCommand(int id, UpdateUserDto userUpdate)
+        {
+            var userModelFromRepo = _repository.GetUserById(id);
+            if(userModelFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(userUpdate, userModelFromRepo);
+
+            _repository.UpdateUser(userModelFromRepo);
+
+            _repository.SaveChanges();
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public ActionResult PartialUserUpdate(int id, JsonPatchDocument<UpdateUserDto> patchDoc)
+        {
+            var userModelFromRepo = _repository.GetUserById(id);
+            if (userModelFromRepo == null)
+            {
+                return NotFound();
+            }
+
+            var userToPatch = _mapper.Map<UpdateUserDto>(userModelFromRepo);
+            patchDoc.ApplyTo(userToPatch, ModelState);
+
+            if (!TryValidateModel(userToPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(userToPatch, userModelFromRepo);
+
+            _repository.UpdateUser(userModelFromRepo);
+
+            _repository.SaveChanges();
+
+            return NoContent();
         }
 
     }

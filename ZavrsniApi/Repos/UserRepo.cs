@@ -36,7 +36,14 @@ namespace ZavrsniApi.Repos
 
         public bool SaveChanges()
         {
-            return (_context.SaveChanges() >= 0);
+            try
+            {
+                return (_context.SaveChanges() >= 0);
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public int GetLastUserId()

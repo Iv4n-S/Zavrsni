@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using ZavrsniApi.Repos;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using ZavrsniApi.Exceptions;
 
 namespace ZavrsniApi.Controllers
 {
@@ -25,9 +26,9 @@ namespace ZavrsniApi.Controllers
         }
 
         [HttpGet] 
-        public ActionResult<IEnumerable<UserDataDto>> GetAllUsersData() // Task<IEnumerable<UserDataDto>> GetAllUsersData()
+        public ActionResult<IEnumerable<UserDataDto>> GetAllUsersData()
         {
-            var result = _repository.GetAllUsers();//.ConfigureAwait(false);
+            var result = _repository.GetAllUsers();
             if (result != null)
             {
                 return Ok(_mapper.Map<IEnumerable<UserDataDto>>(result));
@@ -57,7 +58,11 @@ namespace ZavrsniApi.Controllers
             userModel.Iduser = lastUser + 1;
             userModel.Role = "user";
             _repository.CreateUser(userModel);
-            _repository.SaveChanges();
+            bool inserted = _repository.SaveChanges();
+            if(!inserted)
+            {
+                throw new DuplicateUserException("Username or email already exists!");
+            }
 
             var userDataModel = _mapper.Map<UserDataDto>(userModel);
 

@@ -6,6 +6,7 @@ const NETWORK_CONFIG = {
 
 const API_CONFIG = {
     userEndpoint: "/api/user",
+    loginEndpoint: "/api/login",
   };
   
   export { NETWORK_CONFIG, API_CONFIG };

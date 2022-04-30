@@ -24,16 +24,6 @@ function Header(props) {
             <Link to="/">
               <Button label="HOME" icon={<HomeIcon  />} className="space-x-2" />
             </Link>
-            <Link to="/user">
-              <Button
-                label="USER"
-                icon={<UserCircleIcon />}
-                className="space-x-2"
-              />
-            </Link>
-            <Link to="/messages">
-              <Button label="MESSAGES" icon={<ChatAlt2Icon />} className="space-x-2" />
-            </Link>
           </div>
           <div className="flex justify-center">
             <Button
@@ -41,7 +31,6 @@ function Header(props) {
               onClick={props.logOut}
               icon={<LogoutIcon />}
               className="space-x-2"
-              color="bg-yellow-300 hover:bg-yellow-400"
             />
           </div>
         </div>

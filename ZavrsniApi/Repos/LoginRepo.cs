@@ -21,7 +21,9 @@ namespace ZavrsniApi.Repos
         }
         public Userdata loginUser(LoginUserDto user) 
         {
-            Userdata logedInUser = _context.Userdata.Where(u => (u.Username.Equals(user.UsernameOrEmail) || u.Email.Equals(user.UsernameOrEmail)) && u.Password.Equals(user.Password)).FirstOrDefault();
+            Userdata logedInUser = _context.Userdata.Where(u => 
+                (u.Username.Equals(user.UsernameOrEmail) || u.Email.Equals(user.UsernameOrEmail)) 
+                && u.Password.Equals(user.Password)).FirstOrDefault();
 
             if(logedInUser == null)
             {

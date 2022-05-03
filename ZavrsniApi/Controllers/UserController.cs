@@ -9,6 +9,14 @@ using ZavrsniApi.Repos;
 using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using ZavrsniApi.Exceptions;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.Extensions.Options;
+using ZavrsniApi.Configuration;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using System;
+using System.Linq;
 
 namespace ZavrsniApi.Controllers
 {
@@ -18,11 +26,13 @@ namespace ZavrsniApi.Controllers
     {
         private readonly IUserRepo _repository;
         private readonly IMapper _mapper;
+        private readonly JwtConfig _jwtConfig;
 
-        public UserController (IUserRepo repository, IMapper mapper)
+        public UserController(IUserRepo repository, IMapper mapper, IOptionsMonitor<JwtConfig> optionsMonitor)
         {
             _repository = repository;
             _mapper = mapper;
+            _jwtConfig = optionsMonitor.CurrentValue;
         }
 
         [HttpGet] 
@@ -48,6 +58,29 @@ namespace ZavrsniApi.Controllers
             }
             return NotFound();
             
+        }
+
+        [HttpGet]
+        [Route("currentUser")]
+        public ActionResult<UserDataDto> GetCurrentUserData()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                var userClaims = identity.Claims;
+
+                return Ok(new UserDataDto
+                {
+                    Username = userClaims.FirstOrDefault(u => u.Type == ClaimTypes.NameIdentifier)?.Value,
+                    Email = userClaims.FirstOrDefault(e => e.Type == ClaimTypes.Email)?.Value,
+                    Name = userClaims.FirstOrDefault(n => n.Type == ClaimTypes.GivenName)?.Value,
+                    Surname = userClaims.FirstOrDefault(s => s.Type == ClaimTypes.Surname)?.Value,
+                    PhoneNumber = userClaims.FirstOrDefault(n => n.Type == ClaimTypes.MobilePhone)?.Value,
+                    Address = userClaims.FirstOrDefault(a => a.Type == ClaimTypes.StreetAddress)?.Value,
+                    Role = userClaims.FirstOrDefault(r => r.Type == ClaimTypes.Role)?.Value
+                });
+            }
+            return NotFound();
         }
 
         [HttpPost]
@@ -111,6 +144,32 @@ namespace ZavrsniApi.Controllers
             _repository.SaveChanges();
 
             return NoContent();
+        }
+
+        private string GenerateJwtToken(Userdata user)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_jwtConfig.Secret));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Username),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.GivenName, user.Name),
+                new Claim(ClaimTypes.Surname, user.Surname),
+                new Claim(ClaimTypes.MobilePhone, user.Phonenumber),
+                new Claim(ClaimTypes.StreetAddress, user.Address),
+                new Claim(ClaimTypes.Role, user.Role)
+
+            };
+
+            var token = new JwtSecurityToken(_jwtConfig.Issuer,
+                _jwtConfig.Audience,
+                claims,
+                expires: DateTime.Now.AddHours(24),
+                signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
     }

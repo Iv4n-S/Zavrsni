@@ -4,6 +4,8 @@ module.exports = {
   theme: {
     fontSize: {
       xxs: ".65rem",
+      lg: "1.125rem",
+      xxxl: "1.875rem",
     },
     fontWeight: {
       semibold: 600,

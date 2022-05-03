@@ -3,6 +3,7 @@ import { BrowserRouter, Redirect, Route, Routes } from "react-router-dom";
 import { NETWORK_CONFIG, API_CONFIG } from "./AppData/Constants";
 import Header from './Header';
 import Login from "./Pages/Login";
+import Register from "./Pages/Register";
 
 
 function App() {
@@ -65,7 +66,7 @@ function App() {
             <BrowserRouter>
                 <div className="flex flex-col justify-center text-center bg-scroll h-full">
                     <Header logOut={LogOut} isLoggedIn={isLoggedIn} />
-           
+                    <p className="text-xxxl py-5 text-slate-400">Welcome to a web page for booking transport!</p>
                     <button onClick={() => {getUserData()}}>User</button>
                     {user == null ? 
                     (<></>) : 
@@ -77,6 +78,9 @@ function App() {
                     }
                     <Routes>
                         <Route path="/login" element={<Login logIn={login} setLoggedIn={setIsLoggedIn}/>} exact={true} />
+                    </Routes> 
+                    <Routes>
+                        <Route path="/register" element={<Register setLoggedIn={setIsLoggedIn} />} exact={true} />
                     </Routes> 
                 </div>
             </BrowserRouter>

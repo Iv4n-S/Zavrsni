@@ -27,6 +27,8 @@ namespace ZavrsniApi.Controllers
         private readonly IUserRepo _repository;
         private readonly IMapper _mapper;
         private readonly JwtConfig _jwtConfig;
+        private DateTime expiresAt;
+
 
         public UserController(IUserRepo repository, IMapper mapper, IOptionsMonitor<JwtConfig> optionsMonitor)
         {
@@ -84,7 +86,7 @@ namespace ZavrsniApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult<UserDataDto> InsertUser(InsertUserDto user)
+        public ActionResult InsertUser(InsertUserDto user)
         {
             var userModel = _mapper.Map<Userdata>(user);
             var lastUser = _repository.GetLastUserId();
@@ -97,9 +99,10 @@ namespace ZavrsniApi.Controllers
                 throw new DuplicateUserException("Username or email already exists!");
             }
 
+            var token = GenerateJwtToken(userModel);
             var userDataModel = _mapper.Map<UserDataDto>(userModel);
 
-            return CreatedAtRoute(nameof(GetUserdata), new {id = userModel.Iduser }, userDataModel);
+            return CreatedAtRoute(nameof(GetUserdata), new {id = userModel.Iduser }, new { token = token, user = userDataModel, expires = expiresAt });
         }
 
         [HttpPut("{id}")]
@@ -163,10 +166,12 @@ namespace ZavrsniApi.Controllers
 
             };
 
+            expiresAt = DateTime.Now.AddSeconds(900);
+
             var token = new JwtSecurityToken(_jwtConfig.Issuer,
                 _jwtConfig.Audience,
                 claims,
-                expires: DateTime.Now.AddHours(24),
+                expires: expiresAt,
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

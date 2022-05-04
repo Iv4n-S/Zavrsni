@@ -25,6 +25,7 @@ namespace ZavrsniApi.Controllers
         private readonly ILoginRepo _repository;
         private readonly IMapper _mapper;
         private readonly JwtConfig _jwtConfig;
+        private DateTime expiresAt;
 
         public LoginController(ILoginRepo repository, IMapper mapper, IOptionsMonitor<JwtConfig> optionsMonitor)
         {
@@ -34,21 +35,23 @@ namespace ZavrsniApi.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         [Route("login")]
         public ActionResult LoginUser(LoginUserDto user)
         {
-            if(user == null)
+            if (user == null)
             {
                 throw new LoginFailedException("Wrong username or password!");
             }
             Userdata logedInUser = _repository.loginUser(user);
-            if(logedInUser == null)
+            if (logedInUser == null)
             {
                 throw new LoginFailedException("Wrong username or password!");
             }
             var token = GenerateJwtToken(logedInUser);
+            var userDataModel = _mapper.Map<UserDataDto>(logedInUser);
 
-            return Ok(token);
+            return Ok(new { token = token, user = userDataModel, expires = expiresAt });
         }
 
 
@@ -66,15 +69,16 @@ namespace ZavrsniApi.Controllers
                 new Claim(ClaimTypes.MobilePhone, user.Phonenumber),
                 new Claim(ClaimTypes.StreetAddress, user.Address),
                 new Claim(ClaimTypes.Role, user.Role)
-
             };
+
+            expiresAt = DateTime.Now.AddHours(24);
 
             var token = new JwtSecurityToken(_jwtConfig.Issuer,
                 _jwtConfig.Audience,
                 claims,
-                expires: DateTime.Now.AddHours(24),
+                expires: expiresAt,
                 signingCredentials: credentials);
-
+            
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }

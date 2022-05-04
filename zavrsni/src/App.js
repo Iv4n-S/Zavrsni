@@ -5,61 +5,37 @@ import Header from './Header';
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 
-
 function App() {
-    const [user, setUser] = React.useState(null);
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-
     const [error, setError] = React.useState("");
 
-    function getUserData() {
-        fetch(NETWORK_CONFIG.apiFullHost + API_CONFIG.userEndpoint+"/1")
-        .then((data) => data.json())
-        .then((response) => {
-            if (!response.ok) {
-                setError("Fetch failed");
-                setUser(response);
-            } else {
-                setUser(response);
-            }
-        })
-        .catch((error) => {
-            setError("Fetch failed");
-        });
-    }
+    React.useEffect(() => {
+        if(localStorage.getItem('token') != null) {
+            setIsLoggedIn(true);
+            let expireDate = JSON.parse(localStorage.getItem('expires'));
+            setTimeout(() => {
+                setIsLoggedIn(false);
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                localStorage.removeItem('expires');
+            }, Date.parse(expireDate) - Date.now());
+        }
+    }, []);
 
     const LogOut = (e) => {
         e.preventDefault();
-        setUser(null);
         setError("");
         setIsLoggedIn(false);
-        /*
-        const options = {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        };
-    
-        fetch(NETWORK_CONFIG.apiFullHost + API_CONFIG.logoutEndpoint, options)
-          .then((response) => {
-            if (!response.ok) {
-              setError("Logout failed");
-            } else {
-              setIsLoggedIn(false);
-              window.location.replace("/");
-            }
-          })
-          .catch((error) => {
-            setError("Logout failed");
-          });
-          */
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('expires');
       };
-
+    /*
     const login = (loginForm) => {
         if (loginForm.email !== "") {
-          setUser({ email: loginForm.email, isAdmin: loginForm.isAdmin});
           setIsLoggedIn(true);
         }
-      };
+      };*/
 
     return (
         <div className="App">
@@ -67,17 +43,17 @@ function App() {
                 <div className="flex flex-col justify-center text-center bg-scroll h-full">
                     <Header logOut={LogOut} isLoggedIn={isLoggedIn} />
                     <p className="text-xxxl py-5 text-slate-400">Welcome to a web page for booking transport!</p>
-                    <button onClick={() => {getUserData()}}>User</button>
-                    {user == null ? 
+                    {localStorage.getItem("user") == undefined ? 
                     (<></>) : 
-                    (<div>{user.username}</div>)
-                    }
-                    {user == null ? 
-                    (<></>) : 
-                    (<div>{user.email}</div>)
+                    (
+                        <div>
+                            <div>{JSON.parse(localStorage.getItem("user")).username}</div>
+                            <div>{JSON.parse(localStorage.getItem("token"))}</div>
+                        </div>
+                    )
                     }
                     <Routes>
-                        <Route path="/login" element={<Login logIn={login} setLoggedIn={setIsLoggedIn}/>} exact={true} />
+                        <Route path="/login" element={<Login /*logIn={login}*/ setLoggedIn={setIsLoggedIn} LogOut={LogOut}/>} exact={true} />
                     </Routes> 
                     <Routes>
                         <Route path="/register" element={<Register setLoggedIn={setIsLoggedIn} />} exact={true} />

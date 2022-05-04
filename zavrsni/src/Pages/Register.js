@@ -5,6 +5,8 @@ import Button from "../Components/Button";
 import cx from "classnames";
 import Card from "../Components/Card";
 import Input from "../Components/Input";
+import { saveTokenInLocalStorage } from "../AuthService";
+
 import {
   LockClosedIcon,
   MailIcon,
@@ -65,14 +67,22 @@ function Register(props) {
 
         fetch(NETWORK_CONFIG.apiFullHost + API_CONFIG.userEndpoint, options)
         .then((response) => {
-            if (response.status !==   201) {
+            if (response.status !== 201) {
                 setError("Register failed");
             } else {
-                props.setLoggedIn(true);
-                navigate("/");
+                response.json().then((value) => {
+                    saveTokenInLocalStorage(value);
+                    props.setLoggedIn(true);
+                    setTimeout(() => {
+                        props.setLoggedIn(false);
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                        localStorage.removeItem('expires');
+                    }, Date.parse(value.expires) - Date.now());
+                    navigate("/");
+                }).catch((error) => setError("Register failed"));
             }
-        })
-        .catch((error) => {
+        }).catch((error) => {
             setError("Register failed");
         });
     }

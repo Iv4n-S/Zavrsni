@@ -73,3 +73,8 @@ C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\Microsoft.
 C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\Microsoft.IdentityModel.Tokens.dll
 C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\System.IdentityModel.Tokens.Jwt.dll
 C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\obj\Debug\netcoreapp3.1\ZavrsniApi.MvcApplicationPartsAssemblyInfo.cs
+C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
+C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\System.Drawing.Common.dll
+C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\Microsoft.Win32.SystemEvents.dll
+C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\runtimes\unix\lib\netcoreapp3.1\System.Drawing.Common.dll
+C:\FAKS\6.Semestar\Zavrsni\Zavrsni\ZavrsniApi\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\System.Drawing.Common.dll

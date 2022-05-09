@@ -37,11 +37,10 @@ function Login(props) {
         .then((response) => {
         if (!response.ok) {
             props.setLoggedIn(false);
-            setError("Incorrect Email or Password.");
+            setError("Wrong username or password!");
         } else {
             response.json().then((value) => {
                 saveTokenInLocalStorage(value);
-                //props.logIn(loginForm);
                 props.setLoggedIn(true);
                 setTimeout(() => {
                     props.setLoggedIn(false);
@@ -50,22 +49,18 @@ function Login(props) {
                     localStorage.removeItem('expires');
                 }, Date.parse(value.expires) - Date.now());
                 navigate("/");
-            }).catch((error) => setError("Incorrect Email or Password."));
+            }).catch((error) => setError("Wrong username or password!"));
         }
         })
-        .catch((error) => setError("Incorrect Email or Password."));
+        .catch((error) => setError("Wrong username or password!"));
     }
 
     const FormStyle = cx({
-        "flex flex-col items-center w-full space-y-4": true,
+        "flex flex-col items-center w-full": true,
     });
 
     const ButtonStyle = cx({
-        "flex justify-between md:w-80 w-2/3 py-2": true,
-    });
-
-    const InputStyle = cx({
-        "md:w-80 w-auto": true,
+        "flex justify-between": true,
     });
 
     return (
@@ -75,7 +70,6 @@ function Login(props) {
                 <div className={FormStyle}>
                 <Input
                     icon={<MailIcon fill="gray" />}
-                    className={InputStyle}
                     name="usernameOrEmail"
                     placeholder="Enter Your Username or Email"
                     onChange={onChange}
@@ -84,7 +78,6 @@ function Login(props) {
                 />
                 <Input
                     icon={<LockClosedIcon fill="gray" />}
-                    className={InputStyle}
                     name="password"
                     type="password"
                     placeholder="Enter Your Password"

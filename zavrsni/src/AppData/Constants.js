@@ -7,6 +7,7 @@ const NETWORK_CONFIG = {
 const API_CONFIG = {
     userEndpoint: "/api/user",
     loginEndpoint: "/api/login",
+    postImage: "/api/hotel/imagePost/"
   };
   
   export { NETWORK_CONFIG, API_CONFIG };

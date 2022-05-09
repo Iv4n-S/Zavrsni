@@ -17,16 +17,7 @@ import {
 } from "@heroicons/react/solid";
 
 function Register(props) {
-  const [registerForm, setRegisterForm] = React.useState({
-    username: "",
-    email: "",
-    name: "",
-    surname: "",
-    phoneNumber: "",
-    address: "",
-    password: "",
-    password2: ""
-  });
+  const [registerForm, setRegisterForm] = React.useState({});
 
   const [error, setError] = React.useState("");
   let navigate = useNavigate();
@@ -46,7 +37,6 @@ function Register(props) {
 
     }
     else {
-
         const body = `{
                 "Username": "${registerForm.username}",
                 "Email": "${registerForm.email}",
@@ -89,11 +79,11 @@ function Register(props) {
   }
 
   const FormStyle = cx({
-    "flex flex-col items-center w-full space-y-2": true,
+    "flex flex-col items-center w-full": true,
   });
 
   const ButtonStyle = cx({
-    "flex justify-between md:w-80 w-2/3 py-2": true,
+    "flex justify-between": true,
   });
 
   const InputStyle = cx({
@@ -107,7 +97,6 @@ function Register(props) {
           <div className={FormStyle}>
             <Input
                 icon={<UserCircleIcon fill="gray" />}
-                className={InputStyle}
                 name="username"
                 onChange={onChange}
                 value={registerForm.username}
@@ -116,7 +105,6 @@ function Register(props) {
             />
             <Input
                 icon={<MailIcon fill="gray" />}
-                className={InputStyle}
                 type="email"
                 name="email"
                 onChange={onChange}
@@ -127,7 +115,6 @@ function Register(props) {
             <Input
                 icon={<UserIcon fill="gray" />}
                 name="name"
-                className={InputStyle}
                 onChange={onChange}
                 value={registerForm.name}
                 placeholder="First Name"
@@ -136,7 +123,6 @@ function Register(props) {
             <Input
                 icon={<UserIcon fill="gray" />}
                 name="surname"
-                className={InputStyle}
                 onChange={onChange}
                 value={registerForm.surname}
                 placeholder="Last Name"
@@ -144,7 +130,6 @@ function Register(props) {
             />
             <Input
                 icon={<PhoneIcon fill="gray" />}
-                className={InputStyle}
                 name="phoneNumber"
                 onChange={onChange}
                 value={registerForm.phoneNumber}
@@ -153,7 +138,6 @@ function Register(props) {
             />
             <Input
                 icon={<HomeIcon fill="gray" />}
-                className={InputStyle}
                 name="address"
                 onChange={onChange}
                 value={registerForm.address}
@@ -162,7 +146,6 @@ function Register(props) {
             />
             <Input
                 icon={<LockClosedIcon fill="gray" />}
-                className={InputStyle}
                 type="password"
                 name="password"
                 onChange={onChange}
@@ -172,7 +155,6 @@ function Register(props) {
             />
             <Input
                 icon={<LockClosedIcon fill="gray" />}
-                className={InputStyle}
                 type="password"
                 name="password2"
                 onChange={onChange}
@@ -180,15 +162,20 @@ function Register(props) {
                 placeholder="Repeat Password"
                 required={true}
             />
+            {error && (
+                    <div className="border-red-100 rounded p-2 text-red-700 mb-2 bg-red-100">
+                    {error}
+                    </div>
+            )}
             <div className={ButtonStyle}>
-              <Button
-                className="bg-gray-100 rounded text-gray-900"
-                label="Login"
-                onClick={() => {
-                  navigate("/login");
-                }}
-              />
-              <Button label="Register" type="submit" />
+                <Button label="Register" type="submit" />
+                <Button
+                    className="bg-gray-100 rounded text-gray-900"
+                    label="Login"
+                    onClick={() => {
+                    navigate("/login");
+                    }}
+                />
             </div>
           </div>
         </form>

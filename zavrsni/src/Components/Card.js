@@ -6,7 +6,6 @@ function Card({
   children,
   custom,
   interactive,
-  link,
   className,
 }) {
   const cardClassName = cx({
@@ -17,7 +16,7 @@ function Card({
 
   if (interactive === true) {
     return (
-      <a href={link} className="flex w-full">
+      <a className="flex w-full">
         <div className={cardClassName}>
           {title && <div className="text-2xl mb-6">{title}</div>}
           {children}

@@ -106,7 +106,7 @@ namespace ZavrsniApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateCommand(int id, UpdateUserDto userUpdate)
+        public ActionResult UpdateUser(int id, UpdateUserDto userUpdate)
         {
             var userModelFromRepo = _repository.GetUserById(id);
             if(userModelFromRepo == null)

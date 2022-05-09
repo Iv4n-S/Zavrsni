@@ -15,7 +15,11 @@ namespace ZavrsniApi
         public string Hotelroomdesc { get; set; }
         public int Stars { get; set; }
         public int Idlocation { get; set; }
+        public int IdHotel { get; set; }
+
 
         public virtual Location IdlocationNavigation { get; set; }
+        public virtual ICollection<Hotelroomimages> Hotelroomimages { get; set; }
+
     }
 }

@@ -22,6 +22,7 @@ namespace ZavrsniApi
         public virtual DbSet<Booking> Booking { get; set; }
         public virtual DbSet<Bookingtype> Bookingtype { get; set; }
         public virtual DbSet<Hotel> Hotel { get; set; }
+        public virtual DbSet<Hotelroomimages> Hotelroomimages { get; set; }
         public virtual DbSet<Location> Location { get; set; }
         public virtual DbSet<Occupieditem> Occupieditem { get; set; }
         public virtual DbSet<Timeslots> Timeslots { get; set; }
@@ -121,6 +122,8 @@ namespace ZavrsniApi
                     .HasColumnName("hotelroomdesc")
                     .HasMaxLength(2048);
 
+                entity.Property(e => e.IdHotel).HasColumnName("idHotel");
+
                 entity.Property(e => e.Idlocation).HasColumnName("idlocation");
 
                 entity.Property(e => e.Stars).HasColumnName("stars");
@@ -130,6 +133,30 @@ namespace ZavrsniApi
                     .HasForeignKey(d => d.Idlocation)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("hotel_idlocation_fkey");
+            });
+
+            modelBuilder.Entity<Hotelroomimages>(entity =>
+            {
+                entity.HasKey(e => e.Idimage)
+                    .HasName("hotelroomimages_pkey");
+
+                entity.ToTable("hotelroomimages");
+
+                entity.Property(e => e.Idimage)
+                    .HasColumnName("idimage")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Idhotelroom).HasColumnName("idhotelroom");
+
+                entity.Property(e => e.ImageName)
+                    .IsRequired()
+                    .HasColumnName("imagename")
+                    .HasMaxLength(1024);
+
+                entity.HasOne(d => d.IdhotelroomNavigation)
+                    .WithMany(p => p.Hotelroomimages)
+                    .HasForeignKey(d => d.Idhotelroom)
+                    .HasConstraintName("hotelroomimages_idhotelroom_fkey");
             });
 
             modelBuilder.Entity<Location>(entity =>

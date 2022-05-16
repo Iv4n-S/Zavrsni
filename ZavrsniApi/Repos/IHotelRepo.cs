@@ -13,5 +13,6 @@ namespace ZavrsniApi.Repos
         void InsertImages(Hotelroomimages image);
         int GetLastImageId();
         IEnumerable<Hotelroomimages> GetImagesForHotelRoom(int idHotelRoom);
+        string GetLocation(int idLocation);
     }
 }

@@ -23,11 +23,10 @@ namespace ZavrsniApi.Repos
 
         public IEnumerable<Hotel> GetTenMostBookedHotelsLastWeek()
         {
-            IEnumerable<int> idHotelRooms = _context.Booking.Where(b => b.Timecreated > DateTime.Today.AddDays(-7)).Select(b => b.Idbookingitem).ToList();
+            IEnumerable<int> idHotels = _context.Booking.Where(b => b.Timecreated > DateTime.Today.AddDays(-7) && b.Idbookingtype == 2).Select(b => b.IdHotel).ToList();
             Dictionary<int, int> bookingsPerHotel = new Dictionary<int, int>();
-            foreach (var hotelRoom in idHotelRooms)
+            foreach (var idHotel in idHotels)
             {
-                int idHotel = _context.Hotel.Where(h => h.Idhotelroom == hotelRoom).Select(h => h.IdHotel).FirstOrDefault();
                 int value = 1;
                 if (bookingsPerHotel.ContainsKey(idHotel))
                 {
@@ -36,10 +35,18 @@ namespace ZavrsniApi.Repos
                 }
                 bookingsPerHotel[idHotel] = value;
             }
+
             IEnumerable<Hotel> hotels = _context.Hotel.AsEnumerable().Where(h => bookingsPerHotel.ContainsKey(h.IdHotel))
                 .OrderByDescending(h => bookingsPerHotel[h.IdHotel]).Take(10);
-
-            return hotels;
+            IEnumerable<Hotel> hotelsDistinct = new Hotel[] { };
+            foreach(var hotel in hotels)
+            {
+                if (!hotelsDistinct.Where(h => h.IdHotel == hotel.IdHotel).Any())
+                {
+                    hotelsDistinct = hotelsDistinct.Append(hotel);
+                }
+            }
+            return hotelsDistinct;
 
         }
 
@@ -60,6 +67,11 @@ namespace ZavrsniApi.Repos
         public IEnumerable<Hotelroomimages> GetImagesForHotelRoom(int idHotelRoom)
         {
             return _context.Hotelroomimages.Where(i => i.Idhotelroom == idHotelRoom).ToList();
+        }
+
+        public string GetLocation(int idLocation)
+        {
+            return _context.Location.Where(l => l.Idlocation == idLocation).Select(l => l.Locationname).FirstOrDefault();
         }
 
         public bool SaveChanges()

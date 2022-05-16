@@ -40,7 +40,15 @@ namespace ZavrsniApi.Controllers
             var result = _repository.GetTenMostBookedHotelsLastWeek();
             if (result != null)
             {
-                return Ok(_mapper.Map<IEnumerable<HotelDto>>(result));
+                var hotels = _mapper.Map<IEnumerable<HotelDto>>(result);
+                foreach (var hotel in hotels)
+                {
+                    var image = (OkObjectResult)GetImages(hotel.Idhotelroom).Result;
+                    hotel.image = (GetImagesDto)image.Value;
+                    hotel.Location = _repository.GetLocation(hotel.IdLocation);
+                }
+                
+                return Ok(hotels);
             }
             return NotFound();
         }

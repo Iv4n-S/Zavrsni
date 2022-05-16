@@ -63,6 +63,8 @@ namespace ZavrsniApi
 
                 entity.Property(e => e.Timecreated).HasColumnName("timecreated");
 
+                entity.Property(e => e.IdHotel).HasColumnName("idhotel");
+
                 entity.HasOne(d => d.IdbookingtypeNavigation)
                     .WithMany(p => p.Booking)
                     .HasForeignKey(d => d.Idbookingtype)

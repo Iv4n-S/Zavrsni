@@ -5,13 +5,7 @@ import Button from "../Components/Button";
 import cx from "classnames";
 import Card from "../Components/Card";
 import Input from "../Components/Input";
-import {
-  LocationMarkerIcon,
-  QuestionMarkCircleIcon,
-  AnnotationIcon,
-  MenuAlt1Icon,
-  PhoneIcon,
-} from "@heroicons/react/solid";
+
 import ImageGallery from "react-image-gallery";
 
 function PostImage(props) {
@@ -45,7 +39,7 @@ function PostImage(props) {
                 },
             };
 
-            fetch(NETWORK_CONFIG.apiFullHost + API_CONFIG.postImage + 9, imageOptions)
+            fetch(NETWORK_CONFIG.apiFullHost + API_CONFIG.postImage + 8, imageOptions)
             .then((response) => {
                 if (!response.ok) {
                     setError("Adding images failed");

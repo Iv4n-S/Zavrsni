@@ -1,19 +1,54 @@
+import React from "react";
+import { API_CONFIG, NETWORK_CONFIG } from "../AppData/Constants";
+import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
+import PostImage from "./[temp]PostImage";
+import HotelInScrollList from "../Components/HotelInScrollList";
+import {LocationMarkerIcon} from "@heroicons/react/solid";
+
+
 function Home() {
+    const [topTenHotels, setTopTenHotels] = React.useState();
+    const [error, setError] = React.useState(""); 
+
+    React.useEffect(() => {
+        const options = {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+        };
+        fetch(NETWORK_CONFIG.apiFullHost + API_CONFIG.topTenHotels, options)
+        .then((response) => {
+            if(!response.ok) {
+                setError("Retriving top ten hotels failed.");
+            }
+            else {
+                response.json()
+                .then((value) => {
+                    setTopTenHotels(value);
+                })
+            }
+
+        }).catch((error) =>
+            setError("Retriving top ten hotels failed."))
+    }, [])
+
     return (
         <div>
         <p className="text-xxxl py-5 text-slate-400">Welcome to a web page for booking transport!</p>
-            {localStorage.getItem("user") == undefined ? 
-                (<></>) : 
-                (
-                    <div>
-                        <div>{JSON.parse(localStorage.getItem("user")).username}</div>
-                        <div>{JSON.parse(localStorage.getItem("token"))}</div>
-                    </div>
-                )
-                }
-            {/*<ScrollMenu>
 
-            </ScrollMenu>*/}
+
+        <p className="text-lg py-5 text-slate-500 pt-16">Top booked hotels last week</p>
+
+        <div className="justify-center border border-2 rounded-lg mx-6">
+            {topTenHotels == undefined ? (<></>) : (
+            <ScrollMenu>
+                {topTenHotels.map((post) => (
+                    <HotelInScrollList className="h-80 w-60" hotel={post}>
+                    </HotelInScrollList> 
+                ))
+            }
+            </ScrollMenu>
+            )}
+        </div>
         </div>
 
     );

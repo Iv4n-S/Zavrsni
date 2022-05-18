@@ -62,6 +62,7 @@ namespace ZavrsniApi.Controllers
 
             var claims = new[]
             {
+                new Claim(ClaimTypes.Sid, user.Iduser.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Username),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.GivenName, user.Name),

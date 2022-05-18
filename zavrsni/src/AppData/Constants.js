@@ -9,6 +9,9 @@ const API_CONFIG = {
     loginEndpoint: "/api/login",
     postImage: "/api/hotel/imagePost/",
     topTenHotels: "/api/hotel/topTen/",
+    searchHotels: "/api/hotel/filteredHotels/",
+    currentUser: "/api/user/currentUser/",
+    locationEndpoint: "/api/location/",
   };
   
   export { NETWORK_CONFIG, API_CONFIG };

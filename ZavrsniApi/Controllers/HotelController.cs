@@ -53,6 +53,26 @@ namespace ZavrsniApi.Controllers
             return NotFound();
         }
 
+        [HttpPost] 
+        [Route("filteredHotels")]
+        public ActionResult<IEnumerable<HotelDto>> GetFilteredHotels(HotelSearchFiltersDto filters)
+        {
+            var result = _repository.GetSearchedHotels(filters);
+            if(result != null)
+            {
+                var hotels = _mapper.Map<IEnumerable<HotelDto>>(result);
+                foreach (var hotel in hotels)
+                {
+                    var image = (OkObjectResult)GetImages(hotel.Idhotelroom).Result;
+                    hotel.image = (GetImagesDto)image.Value;
+                    hotel.Location = _repository.GetLocation(hotel.IdLocation);
+                }
+
+                return Ok(hotels);
+            }
+            return NotFound();
+        }
+
         [HttpPost]
         [Route("imagePost/{idHotelRoom}")]
         public ActionResult InsertImages(int idHotelRoom, [FromForm] ImageDto formData)
@@ -86,7 +106,6 @@ namespace ZavrsniApi.Controllers
             }
             return Ok();
         }
-            
         
         [HttpGet]
         [Route("getImages/{idHotelRoom}")] 

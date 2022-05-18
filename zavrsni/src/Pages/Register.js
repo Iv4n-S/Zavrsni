@@ -86,17 +86,13 @@ function Register(props) {
     "flex justify-between": true,
   });
 
-  const InputStyle = cx({
-    "md:w-80 w-auto": true,
-  });
-
   return (
     <div className="flex justify-center">
       <Card title="Register your account" className="md:w-1/3 w-96">
         <form onSubmit={onSubmit}>
           <div className={FormStyle}>
             <Input
-                icon={<UserCircleIcon fill="gray" />}
+                icon={<UserCircleIcon />}
                 name="username"
                 onChange={onChange}
                 value={registerForm.username}
@@ -104,7 +100,7 @@ function Register(props) {
                 required={true}
             />
             <Input
-                icon={<MailIcon fill="gray" />}
+                icon={<MailIcon />}
                 type="email"
                 name="email"
                 onChange={onChange}
@@ -113,7 +109,7 @@ function Register(props) {
                 required={true}
             />
             <Input
-                icon={<UserIcon fill="gray" />}
+                icon={<UserIcon />}
                 name="name"
                 onChange={onChange}
                 value={registerForm.name}
@@ -121,7 +117,7 @@ function Register(props) {
                 required={true}
             />
             <Input
-                icon={<UserIcon fill="gray" />}
+                icon={<UserIcon />}
                 name="surname"
                 onChange={onChange}
                 value={registerForm.surname}
@@ -129,7 +125,7 @@ function Register(props) {
                 required={true}
             />
             <Input
-                icon={<PhoneIcon fill="gray" />}
+                icon={<PhoneIcon />}
                 name="phoneNumber"
                 onChange={onChange}
                 value={registerForm.phoneNumber}
@@ -137,7 +133,7 @@ function Register(props) {
                 required={true}
             />
             <Input
-                icon={<HomeIcon fill="gray" />}
+                icon={<HomeIcon />}
                 name="address"
                 onChange={onChange}
                 value={registerForm.address}
@@ -145,7 +141,7 @@ function Register(props) {
                 required={true}
             />
             <Input
-                icon={<LockClosedIcon fill="gray" />}
+                icon={<LockClosedIcon />}
                 type="password"
                 name="password"
                 onChange={onChange}
@@ -154,7 +150,7 @@ function Register(props) {
                 required={true}
             />
             <Input
-                icon={<LockClosedIcon fill="gray" />}
+                icon={<LockClosedIcon />}
                 type="password"
                 name="password2"
                 onChange={onChange}
@@ -163,9 +159,9 @@ function Register(props) {
                 required={true}
             />
             {error && (
-                    <div className="border-red-100 rounded p-2 text-red-700 mb-2 bg-red-100">
+                <div className="border-red-100 rounded p-2 text-red-700 mb-2 bg-red-100">
                     {error}
-                    </div>
+                </div>
             )}
             <div className={ButtonStyle}>
                 <Button label="Register" type="submit" />

@@ -74,6 +74,33 @@ namespace ZavrsniApi.Repos
             return _context.Location.Where(l => l.Idlocation == idLocation).Select(l => l.Locationname).FirstOrDefault();
         }
 
+        public IEnumerable<Hotel> GetSearchedHotels(HotelSearchFiltersDto filters)
+        {
+            int IdLocation = _context.Location.Where(l => l.Locationname.ToLower().Equals(filters.Location.ToLower())).Select(l => l.Idlocation).FirstOrDefault();
+            var hotelsInLocation = _context.Hotel.Where(h => h.Idlocation == IdLocation).ToList();
+            IEnumerable<Hotel> hotels  = new Hotel[] { };
+            IEnumerable<int> timeSlots = _context.Timeslots.Where(t => filters.SelectedDates.Contains(t.Itemdate)).Select(t => t.Idtimeslot).ToList();
+
+            foreach(var hotelInLocation in hotelsInLocation)
+            {
+                bool available = true;
+                foreach(var date in timeSlots)
+                {
+                    if(_context.Occupieditem.Where(i => i.Idtimeslot == date && i.Idbookingitem == hotelInLocation.Idhotelroom).Any())
+                    {
+                        available = false;
+                    }
+                }
+
+                if(available)
+                {
+                    hotels = hotels.Append(hotelInLocation);
+                }
+            }
+
+            return hotels;
+        }
+
         public bool SaveChanges()
         {
             try

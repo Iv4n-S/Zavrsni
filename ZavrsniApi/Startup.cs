@@ -83,6 +83,7 @@ namespace ZavrsniApi
             services.AddScoped<ITransportRepo, TransportRepo>();
             services.AddScoped<ILoginRepo, LoginRepo>();
             services.AddScoped<IHotelRepo, HotelRepo>();
+            services.AddScoped<ILocationRepo, LocationRepo>();
 
             services.AddDistributedMemoryCache();
 

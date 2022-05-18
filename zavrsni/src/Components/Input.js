@@ -13,6 +13,7 @@ export default function Input({
         required,
         icon,
         disabled,
+        onClick,
     }) {
     const InputStyle = cx({
         "flex flex-row border-2 rounded-sm mb-2 filter drop-shadow-md": true,
@@ -30,20 +31,36 @@ export default function Input({
 
     return (
         <Field label={label} className={className}>
-        <div className={InputStyle}>
-            <div className={IconStyle}>{icon}</div>
-            <input
-                className="p-2 w-full border-l-2"
-                name={name}
-                type={type}
-                placeholder={placeholder}
-                onChange={onChange}
-                value={value}
-                required={required}
-                disabled={disabled}
-            />
-        </div>
-            
+        {icon ? (
+            <div className={InputStyle}>
+                <div className={IconStyle}>{icon}</div>
+                <input
+                    className="p-2 w-full border-l-2"
+                    name={name}
+                    type={type}
+                    placeholder={placeholder}
+                    onChange={onChange}
+                    value={value}
+                    required={required}
+                    disabled={disabled}
+                    onClick={onClick}
+                />
+            </div>
+        ) : (
+            <div className={InputStyle}>
+                <input
+                    className="p-2 w-full border-l-2"
+                    name={name}
+                    type={type}
+                    placeholder={placeholder}
+                    onChange={onChange}
+                    value={value}
+                    required={required}
+                    disabled={disabled}
+                    onClick={onClick}
+                />
+            </div>
+        )}           
         </Field>
     );
 }

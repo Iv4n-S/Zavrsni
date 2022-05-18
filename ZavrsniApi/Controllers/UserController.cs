@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using ZavrsniApi.DtoModels;
-using ZavrsniApi.SqlDb;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using ZavrsniApi.Repos;
 using AutoMapper;
-using Microsoft.AspNetCore.JsonPatch;
 using ZavrsniApi.Exceptions;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Options;
@@ -17,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ZavrsniApi.Controllers
 {
@@ -63,24 +60,18 @@ namespace ZavrsniApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("currentUser")]
         public ActionResult<UserDataDto> GetCurrentUserData()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             if (identity != null)
             {
-                var userClaims = identity.Claims;
+                int id = int.Parse(identity.Claims.FirstOrDefault(i => i.Type == ClaimTypes.Sid)?.Value);
+                var user = _repository.GetUserById(id);
+                var userdata = _mapper.Map<UserDataDto>(user);
 
-                return Ok(new UserDataDto
-                {
-                    Username = userClaims.FirstOrDefault(u => u.Type == ClaimTypes.NameIdentifier)?.Value,
-                    Email = userClaims.FirstOrDefault(e => e.Type == ClaimTypes.Email)?.Value,
-                    Name = userClaims.FirstOrDefault(n => n.Type == ClaimTypes.GivenName)?.Value,
-                    Surname = userClaims.FirstOrDefault(s => s.Type == ClaimTypes.Surname)?.Value,
-                    PhoneNumber = userClaims.FirstOrDefault(n => n.Type == ClaimTypes.MobilePhone)?.Value,
-                    Address = userClaims.FirstOrDefault(a => a.Type == ClaimTypes.StreetAddress)?.Value,
-                    Role = userClaims.FirstOrDefault(r => r.Type == ClaimTypes.Role)?.Value
-                });
+                return Ok(userdata);
             }
             return NotFound();
         }
@@ -105,24 +96,29 @@ namespace ZavrsniApi.Controllers
             return CreatedAtRoute(nameof(GetUserdata), new {id = userModel.Iduser }, new { token = token, user = userDataModel, expires = expiresAt });
         }
 
-        [HttpPut("{id}")]
-        public ActionResult UpdateUser(int id, UpdateUserDto userUpdate)
+        [HttpPut]
+        [Authorize]
+        public ActionResult UpdateUser(UpdateUserDto userUpdate)
         {
-            var userModelFromRepo = _repository.GetUserById(id);
-            if(userModelFromRepo == null)
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
             {
-                return NotFound();
+                int id = int.Parse(identity.Claims.FirstOrDefault(i => i.Type == ClaimTypes.Sid)?.Value);
+                var userModelFromRepo = _repository.GetUserById(id);
+                if (userModelFromRepo == null)
+                {
+                    return NotFound();
+                }
+
+                _mapper.Map(userUpdate, userModelFromRepo);
+
+                _repository.UpdateUser(userModelFromRepo);
+
+                _repository.SaveChanges();
             }
-
-            _mapper.Map(userUpdate, userModelFromRepo);
-
-            _repository.UpdateUser(userModelFromRepo);
-
-            _repository.SaveChanges();
-
             return NoContent();
         }
-
+        /*
         [HttpPatch("{id}")]
         public ActionResult PartialUserUpdate(int id, JsonPatchDocument<UpdateUserDto> patchDoc)
         {
@@ -147,7 +143,7 @@ namespace ZavrsniApi.Controllers
             _repository.SaveChanges();
 
             return NoContent();
-        }
+        }*/
 
         private string GenerateJwtToken(Userdata user)
         {
@@ -156,6 +152,7 @@ namespace ZavrsniApi.Controllers
 
             var claims = new[]
             {
+                new Claim(ClaimTypes.Sid, user.Iduser.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.Username),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.GivenName, user.Name),

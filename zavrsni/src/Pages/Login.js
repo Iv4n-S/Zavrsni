@@ -69,7 +69,7 @@ function Login(props) {
             <form onSubmit={onSubmit}>
                 <div className={FormStyle}>
                 <Input
-                    icon={<MailIcon fill="gray" />}
+                    icon={<MailIcon />}
                     name="usernameOrEmail"
                     placeholder="Enter Your Username or Email"
                     onChange={onChange}
@@ -77,7 +77,7 @@ function Login(props) {
                     required={true}
                 />
                 <Input
-                    icon={<LockClosedIcon fill="gray" />}
+                    icon={<LockClosedIcon />}
                     name="password"
                     type="password"
                     placeholder="Enter Your Password"
@@ -87,7 +87,7 @@ function Login(props) {
                 />
                 {error && (
                     <div className="border-red-100 rounded p-2 text-red-700 mb-2 bg-red-100">
-                    {error}
+                        {error}
                     </div>
                 )}
                 <div className={ButtonStyle}>

@@ -1,11 +1,13 @@
 import React from "react";
-import { BrowserRouter, Redirect, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { NETWORK_CONFIG, API_CONFIG } from "./AppData/Constants";
 import Header from './Header';
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Home from "./Pages/Home";
 import PostImage from "./Pages/[temp]PostImage";
+import UserPage from "./Pages/UserPage";
+import Hotels from "./Pages/Hotels";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -49,6 +51,12 @@ function App() {
                     </Routes>
                     <Routes>
                         <Route path="/postImage" element={<PostImage setLoggedIn={setIsLoggedIn} />} />
+                    </Routes>
+                    <Routes>
+                        <Route path="/user" element={<UserPage />} />
+                    </Routes>
+                    <Routes>
+                        <Route path="/hotels" element={<Hotels />} />
                     </Routes>
                 </div>
             </BrowserRouter>

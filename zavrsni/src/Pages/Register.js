@@ -79,16 +79,16 @@ function Register(props) {
   }
 
   const FormStyle = cx({
-    "flex flex-col items-center w-full": true,
+    "flex flex-col items-center w-full px-6": true,
   });
 
   const ButtonStyle = cx({
-    "flex justify-between": true,
+    "flex justify-between pt-3": true,
   });
 
   return (
     <div className="flex justify-center">
-      <Card title="Register your account" className="md:w-1/3 w-96">
+      <Card title="Register your account" className="md:w-1/3 w-auto">
         <form onSubmit={onSubmit}>
           <div className={FormStyle}>
             <Input
@@ -164,7 +164,7 @@ function Register(props) {
                 </div>
             )}
             <div className={ButtonStyle}>
-                <Button label="Register" type="submit" />
+                <Button label="Register" type="submit"/>
                 <Button
                     className="bg-gray-100 rounded text-gray-900"
                     label="Login"

@@ -10,7 +10,7 @@ function Card({
 }) {
   const cardClassName = cx({
     "m-4 p-5 filter border border-2 rounded-lg": true,
-    "drop-shadow-2xl bg-white": !custom,
+    "drop-shadow bg-white": !custom,
     [className]: className,
   });
 

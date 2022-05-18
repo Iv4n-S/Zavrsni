@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "./Components/Button.js";
 import {
     HomeIcon,
@@ -12,15 +12,35 @@ import cx from "classnames";
 
 
 function Header(props) {
+    var navigate = useNavigate();
+    const [userMenuDisplay, setUserMenuDisplay] = React.useState(false);
+    const wrapperRef = React.useRef(null);
     const HeaderStyle = cx({
-        "flex py-4 justify-between align-center drop-shadow bg-cyan-500 text-white": true,
+        "flex py-4 justify-between align-center drop-shadow bg-cyan-500 text-lg text-white": true,
     });
+
+    React.useEffect(() => {
+        if(!props.isLoggedIn) {
+            setUserMenuDisplay(false);
+        }
+        window.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            window.removeEventListener("mousedown", handleClickOutside);
+        };
+    });
+      
+    const handleClickOutside = event => {
+        const { current: wrap } = wrapperRef;
+        if (wrap && !wrap.contains(event.target)) {
+            setUserMenuDisplay(false);
+        }
+    };
 
     return (
         <header className={HeaderStyle}>
         {props.isLoggedIn ? (
             <> 
-                <div className="flex flex-row space-x-4 pl-2">
+                <div className="flex flex-row space-x-4 pl-6">
                     <Link to="/">
                         <Button label="HOME" icon={<HomeIcon />} className="space-x-2" />
                     </Link>
@@ -29,16 +49,39 @@ function Header(props) {
                     </Link>
                 </div>
                 
-                <div className="flex flex-row space-x-4 pr-2">
-                    <Button label="LOGOUT" onClick={props.logOut} icon={<LogoutIcon />} className="space-x-2" />
-                    <Link to="/user">
-                        <Button label="USER" icon={<UserIcon />} className="space-x-2" />
-                    </Link>
+                <div className="flex flex-row space-x-4 pr-10">
+                    <div ref={wrapperRef}>
+                    <Button label="USER" icon={<UserIcon />} className="space-x-2 pr-10" onClick={() => setUserMenuDisplay(!userMenuDisplay)}/>                  
+                    {userMenuDisplay && (
+                        <div className="flex flex-col items-center absolute w-full bg-cyan-500 rounded">
+                            <div
+                                onClick={() => navigate("/user")}
+                                className="flex flex-col items-start w-full border-1 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
+                            >
+                                <span>User Profile</span>
+                            </div>
+                            <div
+                                onClick={() => console.log("User's Posts")}
+                                className="flex flex-col items-start w-full border-1 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
+                            >
+                                <span>User's Posts</span>
+                            </div>
+                            <div
+                                onClick={props.logOut}
+                                className="flex flex-col items-start w-full border-1 border-t-2 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
+                            >
+                                <div className="flex flex-row justify-center">
+                                <p>LOGOUT</p><div className="flex flex-col justify-center w-6 pl-2">{<LogoutIcon/>}</div>
+                                </div>
+                            </div>
+                        </div>
+                        )}
+                    </div>
                 </div>
             </>
         ) : (
             <> 
-                <div className="flex flex-row space-x-4 pl-2">
+                <div className="flex flex-row space-x-4 pl-6">
                     <Link to="/">
                         <Button label="HOME" icon={<HomeIcon />} className="space-x-2" />
                     </Link>
@@ -49,9 +92,9 @@ function Header(props) {
                         <Button label="Post Image" className="space-x-2" />
                     </Link>
                 </div>
-                <div className="flex flex-row space-x-4 pr-2">
+                <div className="flex flex-row space-x-4 pr-10">
                     <Link to="/login">
-                        <Button label="LOGIN" icon={<LoginIcon />} className="space-x-2" />
+                        <Button label="LOGIN" icon={<LoginIcon />} className="space-x-2 pr-10" />
                     </Link>
                 </div>
             </>

@@ -56,16 +56,16 @@ function Login(props) {
     }
 
     const FormStyle = cx({
-        "flex flex-col items-center w-full": true,
+        "flex flex-col items-center w-full px-6": true,
     });
 
     const ButtonStyle = cx({
-        "flex justify-between": true,
+        "flex justify-between pt-3": true,
     });
 
     return (
         <div className="flex justify-center">
-            <Card title="Login to browse the site" className="md:w-1/3 w-96">
+            <Card title="Login to browse the site" className="md:w-1/3 w-auto">
             <form onSubmit={onSubmit}>
                 <div className={FormStyle}>
                 <Input

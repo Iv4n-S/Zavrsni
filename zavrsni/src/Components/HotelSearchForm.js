@@ -111,7 +111,7 @@ function HotelSearchForm(props) {
 
     return (
         <div className="flex justify-center">
-            <Card className="w-1/3">
+            <Card className="md:w-1/3 w-auto">
                 <div className="flex items-center w-full mb-2">
                     <div className="w-full">
                         <span>Date from </span>
@@ -122,7 +122,7 @@ function HotelSearchForm(props) {
                 </div>
                 <div className="flex items-center w-full">
                     <DatePicker 
-                        className="border-2 rounded-sm p-2 w-5/6"
+                        className="border-2 rounded-sm p-2 w-5/6 border-gray-400 hover:border-gray-600"
                         selected={dateFrom} 
                         onChange={(dateFrom) => { 
                             setDateFrom(dateFrom);
@@ -136,7 +136,7 @@ function HotelSearchForm(props) {
                         minDate={new Date()}
                     />
                     <DatePicker 
-                        className="border-2 rounded-sm p-2 w-5/6"
+                        className="border-2 rounded-sm p-2 w-5/6 border-gray-400 hover:border-gray-600"
                         selected={dateTo} 
                         onChange={(dateTo) => { setDateTo(dateTo) }} 
                         dateFormat='dd.MM.yyyy.'
@@ -148,7 +148,7 @@ function HotelSearchForm(props) {
                     <Input
                         className="flex mt-2 w-full"
                         name="location"
-                        placeholder="Type to search location"
+                        placeholder="Search location"
                         value={locationSearch}
                         icon={<LocationMarkerIcon />}
                         onChange={event => setLocationSearch(event.target.value)}
@@ -181,7 +181,7 @@ function HotelSearchForm(props) {
                 <div className="flex justify-center pt-2 mt-2">
                     <Button
                         type="button"
-                        className="bg-gray-100 rounded text-gray-900 w-2/3"
+                        className="bg-gray-100 rounded text-gray-900 w-2/3 border-2 text-gray-900 text-lg border-gray-400 hover:border-gray-600"
                         label="Search"
                         onClick={onSubmit}
                     />

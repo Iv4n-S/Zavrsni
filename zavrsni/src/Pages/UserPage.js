@@ -107,11 +107,11 @@ function UserPage(props) {
     
 
     const FormStyle = cx({
-        "flex flex-col items-center w-full": true,
+        "flex flex-col items-center w-full px-6 pt-2": true,
     });
 
     const ButtonStyle = cx({
-        "flex justify-between": true,
+        "flex justify-between pt-3": true,
     });
     
 

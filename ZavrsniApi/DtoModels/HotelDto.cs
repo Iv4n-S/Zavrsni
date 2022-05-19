@@ -13,6 +13,7 @@ namespace ZavrsniApi.DtoModels
         public string Hotelroomdesc { get; set; }
         public int Stars { get; set; }
         public int IdLocation { get; set; }
+        public int IdHotel { get; set; }
         public string Location { get; set; }
         public GetImagesDto image { get; set; }
 

@@ -51,30 +51,30 @@ function Header(props) {
                 
                 <div className="flex flex-row space-x-4 pr-10">
                     <div ref={wrapperRef}>
-                    <Button label="USER" icon={<UserIcon />} className="space-x-2 pr-10" onClick={() => setUserMenuDisplay(!userMenuDisplay)}/>                  
-                    {userMenuDisplay && (
-                        <div className="flex flex-col items-center absolute w-full bg-cyan-500 rounded">
-                            <div
-                                onClick={() => navigate("/user")}
-                                className="flex flex-col items-start w-full border-1 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
-                            >
-                                <span>User Profile</span>
-                            </div>
-                            <div
-                                onClick={() => console.log("User's Posts")}
-                                className="flex flex-col items-start w-full border-1 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
-                            >
-                                <span>User's Posts</span>
-                            </div>
-                            <div
-                                onClick={props.logOut}
-                                className="flex flex-col items-start w-full border-1 border-t-2 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
-                            >
-                                <div className="flex flex-row justify-center">
-                                <p>LOGOUT</p><div className="flex flex-col justify-center w-6 pl-2">{<LogoutIcon/>}</div>
+                        <Button label="USER" icon={<UserIcon />} className="space-x-2 pr-10" onClick={() => setUserMenuDisplay(!userMenuDisplay)}/>                  
+                        {userMenuDisplay && (
+                            <div className="flex flex-col items-center absolute w-full bg-cyan-500 rounded">
+                                <div
+                                    onClick={() => navigate("/user")}
+                                    className="flex flex-col items-start w-full border-1 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
+                                >
+                                    <span>User Profile</span>
+                                </div>
+                                <div
+                                    onClick={() => console.log("User's Posts")}
+                                    className="flex flex-col items-start w-full border-1 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
+                                >
+                                    <span>User's Posts</span>
+                                </div>
+                                <div
+                                    onClick={props.logOut}
+                                    className="flex flex-col items-start w-full border-1 border-t-2 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
+                                >
+                                    <div className="flex flex-row justify-center">
+                                        <p>LOGOUT</p><div className="flex flex-col justify-center w-6 pl-2">{<LogoutIcon/>}</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         )}
                     </div>
                 </div>

@@ -74,6 +74,26 @@ namespace ZavrsniApi.Controllers
         }
 
         [HttpPost]
+        [Route("getHotel")]
+        public ActionResult GetHotel(HotelRoomsInHotelDto hotelSelected)
+        {
+            var result = _repository.GetHotel(hotelSelected);
+            if(result != null)
+            {
+                var hotelRooms = _mapper.Map<IEnumerable<HotelDto>>(result);
+                foreach (var hotelRoom in hotelRooms)
+                {
+                    var image = (OkObjectResult)GetImages(hotelRoom.Idhotelroom).Result;
+                    hotelRoom.image = (GetImagesDto)image.Value;
+                    hotelRoom.Location = _repository.GetLocation(hotelRoom.IdLocation);
+                }
+
+                return Ok(hotelRooms);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
         [Route("imagePost/{idHotelRoom}")]
         public ActionResult InsertImages(int idHotelRoom, [FromForm] ImageDto formData)
         {

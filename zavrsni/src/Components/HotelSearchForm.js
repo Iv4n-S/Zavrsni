@@ -72,6 +72,7 @@ function HotelSearchForm(props) {
             setError("Location is required!")
         }
         else {
+            setError("");
             var selectedDatesList = [];
             var dateFromPom = dateFrom;
 
@@ -79,8 +80,8 @@ function HotelSearchForm(props) {
                 selectedDatesList.push(JSON.stringify(dateFormat(dateFromPom.toString(), "yyyy-mm-dd")));
                 dateFromPom = add(dateFromPom, { days: 1 });
             }
-            console.log(selectedDatesList);
-            console.log(locationSearch);
+
+            props.setSelectedDates(selectedDatesList);
 
             const body = `{
                 "SelectedDates": [${selectedDatesList}],
@@ -100,7 +101,8 @@ function HotelSearchForm(props) {
                     }
                     else {
                         response.json().then((value) => {
-                            console.log(value);
+                            props.setFilteredHotels(value);
+                            setLocationSearch("");
                         })
                     }})
                 .catch(() => {
@@ -120,7 +122,7 @@ function HotelSearchForm(props) {
                         <span>Date to </span>
                     </div>
                 </div>
-                <div className="flex items-center w-full">
+                <div className="flex relative items-center w-full">
                     <DatePicker 
                         className="border-2 rounded-sm p-2 w-5/6 border-gray-400 hover:border-gray-600"
                         selected={dateFrom} 
@@ -181,7 +183,7 @@ function HotelSearchForm(props) {
                 <div className="flex justify-center pt-2 mt-2">
                     <Button
                         type="button"
-                        className="bg-gray-100 rounded text-gray-900 w-2/3 border-2 text-gray-900 text-lg border-gray-400 hover:border-gray-600"
+                        className="bg-gray-100 rounded text-gray-900 w-2/3 border-2 text-lg border-gray-400 hover:border-gray-600"
                         label="Search"
                         onClick={onSubmit}
                     />

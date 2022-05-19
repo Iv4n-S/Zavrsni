@@ -8,6 +8,7 @@ import Home from "./Pages/Home";
 import PostImage from "./Pages/[temp]PostImage";
 import UserPage from "./Pages/UserPage";
 import Hotels from "./Pages/Hotels";
+import HotelPage from "./Pages/HotelPage";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -44,7 +45,7 @@ function App() {
                         <Route path="/" element={<Home />} exact={true} />
                     </Routes>
                     <Routes>
-                        <Route path="/login" element={<Login /*logIn={login}*/ setLoggedIn={setIsLoggedIn} LogOut={LogOut}/>} exact={true} />
+                        <Route path="/login" element={<Login /*logIn={login}*/ setLoggedIn={setIsLoggedIn}/>} exact={true} />
                     </Routes> 
                     <Routes>
                         <Route path="/register" element={<Register setLoggedIn={setIsLoggedIn} />} />
@@ -57,6 +58,9 @@ function App() {
                     </Routes>
                     <Routes>
                         <Route path="/hotels" element={<Hotels />} />
+                    </Routes>
+                    <Routes>
+                        <Route path="/hotelpage" element={<HotelPage />} />
                     </Routes>
                 </div>
             </BrowserRouter>

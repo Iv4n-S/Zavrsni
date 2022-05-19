@@ -16,14 +16,12 @@ function PostImage(props) {
     var imageList = new Array(); 
 
     function addImages(e) {
-    imageList = e.target.files;
-    console.log(imageList);
+        imageList = e.target.files;
     }
 
     async function onSubmit(e) {
         e.preventDefault();
         setError("");
-        console.log(imageList);
         if(imageList.length !== 0) {
             const formData = new FormData();
             for (var image of imageList) {
@@ -66,7 +64,6 @@ function PostImage(props) {
                 setError("Getting images failed");
             } else {
                 response.json().then((value) => {
-                    console.log(value.image);
                     setImages(value.image);
                 }).catch((error) => {
                     setError("Getting images failed");

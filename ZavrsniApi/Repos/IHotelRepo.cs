@@ -15,5 +15,6 @@ namespace ZavrsniApi.Repos
         IEnumerable<Hotelroomimages> GetImagesForHotelRoom(int idHotelRoom);
         string GetLocation(int idLocation);
         IEnumerable<Hotel> GetSearchedHotels(HotelSearchFiltersDto filters);
+        IEnumerable<Hotel> GetHotel(HotelRoomsInHotelDto hotelSelected);
     }
 }

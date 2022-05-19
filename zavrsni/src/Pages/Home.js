@@ -38,7 +38,7 @@ function Home() {
 
         <p className="text-lg py-5 text-slate-500 pt-16">Top booked hotels last week</p>
 
-        <div className="justify-center border border-2 rounded-lg mx-6">
+        <div className="justify-center border-2 rounded-lg mx-6">
             {topTenHotels == undefined ? (
                 error && (
                     <div className="border-red-100 rounded p-2 text-red-700 mb-2 bg-red-100">

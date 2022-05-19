@@ -50,6 +50,35 @@ namespace ZavrsniApi.Repos
 
         }
 
+        public IEnumerable<Hotel> GetHotel(HotelRoomsInHotelDto hotelSelected)
+        {
+            var hotelRoomsInHotel = _context.Hotel.Where(h => h.IdHotel == hotelSelected.IdHotel).ToList();
+            IEnumerable<int> timeSlots = _context.Timeslots.Where(t => t.Idtimeslottype == 1 && hotelSelected.SelectedDates.Contains(t.Itemdate)).Select(t => t.Idtimeslot).ToList();
+            IEnumerable<Hotel> hotelRooms = new Hotel[] { };
+
+            foreach (var hotelRoom in hotelRoomsInHotel)
+            {
+                if (!hotelRooms.Where(h => h.Hotelroomcapacity == hotelRoom.Hotelroomcapacity).Any())
+                {
+                    bool available = true;
+                    foreach (var date in timeSlots)
+                    {
+                        if (_context.Occupieditem.Where(i => i.Idtimeslot == date && i.Idbookingitem == hotelRoom.Idhotelroom).Any())
+                        {
+                            available = false;
+                        }
+                    }
+
+                    if (available)
+                    {
+                        hotelRooms = hotelRooms.Append(hotelRoom);
+                    }
+                }
+            }
+
+            return hotelRooms;
+        }
+
         public void InsertImages(Hotelroomimages image)
         {
             if (image == null)
@@ -79,22 +108,25 @@ namespace ZavrsniApi.Repos
             int IdLocation = _context.Location.Where(l => l.Locationname.ToLower().Equals(filters.Location.ToLower())).Select(l => l.Idlocation).FirstOrDefault();
             var hotelsInLocation = _context.Hotel.Where(h => h.Idlocation == IdLocation).ToList();
             IEnumerable<Hotel> hotels  = new Hotel[] { };
-            IEnumerable<int> timeSlots = _context.Timeslots.Where(t => filters.SelectedDates.Contains(t.Itemdate)).Select(t => t.Idtimeslot).ToList();
+            IEnumerable<int> timeSlots = _context.Timeslots.Where(t => t.Idtimeslottype == 1 && filters.SelectedDates.Contains(t.Itemdate)).Select(t => t.Idtimeslot).ToList();
 
             foreach(var hotelInLocation in hotelsInLocation)
             {
-                bool available = true;
-                foreach(var date in timeSlots)
+                if (!hotels.Where(h => h.IdHotel == hotelInLocation.IdHotel).Any())
                 {
-                    if(_context.Occupieditem.Where(i => i.Idtimeslot == date && i.Idbookingitem == hotelInLocation.Idhotelroom).Any())
+                    bool available = true;
+                    foreach (var date in timeSlots)
                     {
-                        available = false;
+                        if (_context.Occupieditem.Where(i => i.Idtimeslot == date && i.Idbookingitem == hotelInLocation.Idhotelroom).Any())
+                        {
+                            available = false;
+                        }
                     }
-                }
 
-                if(available)
-                {
-                    hotels = hotels.Append(hotelInLocation);
+                    if (available)
+                    {
+                        hotels = hotels.Append(hotelInLocation);
+                    }
                 }
             }
 

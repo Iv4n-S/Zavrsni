@@ -10,6 +10,7 @@ const API_CONFIG = {
     postImage: "/api/hotel/imagePost/",
     topTenHotels: "/api/hotel/topTen/",
     searchHotels: "/api/hotel/filteredHotels/",
+    getHotel: "/api/hotel/getHotel/",
     currentUser: "/api/user/currentUser/",
     locationEndpoint: "/api/location/",
   };

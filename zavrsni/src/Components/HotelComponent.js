@@ -10,8 +10,8 @@ function HotelComponent(props) {
     let navigate = useNavigate();
 
     return (
-        <div onClick={() => navigate("/hotelpage", {state : { hotel: hotel, selectedDates: props.selectedDates }}) }>
-            <Card className="flex flex-row md:w-2/3 w-auto m-2">
+        <Card className="md:w-2/3 w-auto m-2">
+            <div className="flex flex-row" onClick={() => navigate("/hotelpage", {state : { hotel: hotel, selectedDates: props.selectedDates }}) }>
                 <div className="w-1/3">
                     <img className="h-48 w-48 rounded-lg" src={hotel.image.image[0].original} />
                 </div>
@@ -39,8 +39,8 @@ function HotelComponent(props) {
                         <div>{hotel.location}</div>
                     </div>
                 </div>
-            </Card>
-        </div>
+            </div>
+         </Card>
       );
 }
 

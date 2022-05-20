@@ -13,7 +13,6 @@ function HotelPage(props) {
 
     React.useEffect(() => { 
         if(selectedDates != null) {
-            console.log("datesSelected");
             const body = `{
                 "IdHotel": ${hotel.idHotel},
                 "SelectedDates": [${selectedDates}]

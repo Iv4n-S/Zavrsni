@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import Card from "../Components/Card";
 import HotelSearchForm from "../Components/HotelSearchForm";
+import HotelsList from "../Components/HotelsList";
 
 
 function Hotels(props) {
@@ -15,17 +16,10 @@ function Hotels(props) {
             <div>
                 <HotelSearchForm setSelectedDates={setSelectedDates} setFilteredHotels={setFilteredHotels} className="absolute"/>
             </div>
-            <div className="relative">
+            <div className="flex justify-center">
                 {filteredHotels == undefined ? (<></>) : (
-                <Card>
-                    {filteredHotels.map((hotel, i) => (
-                        <div onClick={() => navigate("/hotelpage", {state : { hotel: hotel, selectedDates: selectedDates}}) } key={i}>
-                            <img className="h-48 w-48" src={hotel.image.image[0].original} />
-                            <p>{hotel.hotelname}</p>
-                            <p>{hotel.location}</p>
-                        </div>
-                    )
-                    )}
+                <Card className="md:w-2/3 w-auto">
+                    <HotelsList hotels={filteredHotels} selectedDates={selectedDates} />
                 </Card>
                 )}
             </div>

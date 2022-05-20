@@ -44,7 +44,7 @@ namespace ZavrsniApi.Controllers
                 foreach (var hotel in hotels)
                 {
                     var image = (OkObjectResult)GetImages(hotel.Idhotelroom).Result;
-                    hotel.image = (GetImagesDto)image.Value;
+                    hotel.image = (IEnumerable<ReturnImage>)image.Value;
                     hotel.Location = _repository.GetLocation(hotel.IdLocation);
                 }
                 
@@ -64,7 +64,7 @@ namespace ZavrsniApi.Controllers
                 foreach (var hotel in hotels)
                 {
                     var image = (OkObjectResult)GetImages(hotel.Idhotelroom).Result;
-                    hotel.image = (GetImagesDto)image.Value;
+                    hotel.image = (IEnumerable<ReturnImage>)image.Value;
                     hotel.Location = _repository.GetLocation(hotel.IdLocation);
                 }
 
@@ -84,7 +84,7 @@ namespace ZavrsniApi.Controllers
                 foreach (var hotelRoom in hotelRooms)
                 {
                     var image = (OkObjectResult)GetImages(hotelRoom.Idhotelroom).Result;
-                    hotelRoom.image = (GetImagesDto)image.Value;
+                    hotelRoom.image = (IEnumerable<ReturnImage>)image.Value;
                     hotelRoom.Location = _repository.GetLocation(hotelRoom.IdLocation);
                 }
 
@@ -129,17 +129,18 @@ namespace ZavrsniApi.Controllers
         
         [HttpGet]
         [Route("getImages/{idHotelRoom}")] 
-        public ActionResult<GetImagesDto> GetImages(int idHotelRoom)
+        public ActionResult<IEnumerable<ReturnImage>> GetImages(int idHotelRoom)
         {
             var images = _repository.GetImagesForHotelRoom(idHotelRoom);
-            GetImagesDto imagesResult = new GetImagesDto();
-            imagesResult.image = new ReturnImage[] { };
+            IEnumerable<ReturnImage> imagesResult = new ReturnImage[] { };
+
             foreach (var image in images)
             {
                 string original = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, image.ImageName);
-                imagesResult.image = imagesResult.image.Append(new ReturnImage { original = original });
+                imagesResult = imagesResult.Append(new ReturnImage { original = original });
             }
             return Ok(imagesResult);
+
         }
     }
 }

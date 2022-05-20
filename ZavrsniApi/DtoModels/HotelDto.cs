@@ -15,7 +15,7 @@ namespace ZavrsniApi.DtoModels
         public int IdLocation { get; set; }
         public int IdHotel { get; set; }
         public string Location { get; set; }
-        public GetImagesDto image { get; set; }
+        public IEnumerable<ReturnImage> image { get; set; }
 
     }
 }

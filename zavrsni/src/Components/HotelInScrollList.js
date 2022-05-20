@@ -16,7 +16,7 @@ function HotelInScrollList({
     return (
     <div className="flex w-full">
         <div className={componentClassName} onClick={() => navigate("/hotelpage", {state : { hotel: hotel, selectedDates: null }}) }>
-            <img className="h-48 w-48" src={hotel.image.image[0].original} />
+            <img className="h-48 w-48" src={hotel.image[0].original} />
             <div className="h-28">
                 <div className="py-2">
                     {hotel.hotelname}

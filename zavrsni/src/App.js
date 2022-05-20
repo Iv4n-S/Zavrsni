@@ -54,7 +54,7 @@ function App() {
                         <Route path="/postImage" element={<PostImage setLoggedIn={setIsLoggedIn} />} />
                     </Routes>
                     <Routes>
-                        <Route path="/user" element={<UserPage />} />
+                        <Route path="/user" element={isLoggedIn  ? <UserPage /> : <Navigate to="/" replace />} />
                     </Routes>
                     <Routes>
                         <Route path="/hotels" element={<Hotels />} />

@@ -20,7 +20,6 @@ function HotelDateSelectionForm(props) {
         }
 
         props.setSelectedDates(selectedDatesList);
-        console.log("starting");
         props.GetHotelRooms(selectedDatesList);
     }
 

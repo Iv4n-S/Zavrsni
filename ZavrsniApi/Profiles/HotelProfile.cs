@@ -12,6 +12,7 @@ namespace ZavrsniApi.Profiles
         public HotelProfile()
         {
             CreateMap<Hotel, HotelDto>();
+            CreateMap<BookingHotelDto, BookHotelDto>();
         }
     }
 }

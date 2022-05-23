@@ -8,6 +8,7 @@ export default function Button({
 	className = "",
 	color = "",
 	icon,
+	disabled,
 }) {
   const finalClassName = cx({
     "flex flex-row items-center px-5 py-2 filter drop-shadow-sm rounded-md justify-center": true,
@@ -22,6 +23,7 @@ export default function Button({
 		type={type}
 		className={finalClassName}
 		onClick={onClick ?? (() => {})}
+		disabled={disabled}
 		>
 		{!icon ? (
 			label

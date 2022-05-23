@@ -133,6 +133,57 @@ namespace ZavrsniApi.Repos
             return hotels;
         }
 
+        public int GetLastBookingId()
+        {
+            return _context.Booking.OrderByDescending(b => b.Idbooking).First().Idbooking;
+        }
+
+        public bool BookHotelRoom(BookHotelDto bookingHotel)
+        {
+            if (bookingHotel == null)
+            {
+                throw new ArgumentNullException(nameof(bookingHotel));
+            }
+            IEnumerable<int> timeSlots = _context.Timeslots.Where(t => t.Idtimeslottype == 1 && bookingHotel.SelectedDates.Contains(t.Itemdate))
+                    .Select(t => t.Idtimeslot).ToList();
+            bool exists = _context.Occupieditem.Where(o => o.Idbookingitem == bookingHotel.IdHotelRoom && timeSlots.Contains(o.Idtimeslot)).Any();
+            if (!exists)
+            {
+                Booking booking = new Booking();
+                foreach (var timeSlot in timeSlots)
+                {
+                    booking = new Booking();
+                    booking.Idbooking = GetLastBookingId() + 1;
+                    booking.Idbookingitem = bookingHotel.IdHotelRoom;
+                    booking.Timecreated = DateTime.Now;
+                    booking.Idbookingtype = 2;
+                    booking.Iduser = bookingHotel.IdUser;
+                    booking.Idtimeslot = timeSlot;
+                    booking.IdHotel = bookingHotel.IdHotel;
+                    _context.Booking.Add(booking);
+                    OccupieHotel(new OccupieItemDto { IdBookingItem = bookingHotel.IdHotelRoom, IdBooking = booking.Idbooking, IdTimeSlot = timeSlot });
+                }
+                return true;
+            }
+            return false;
+        }
+
+        public int GetLastOccupiedItemId()
+        {
+            return _context.Occupieditem.OrderByDescending(o => o.Idoccupieditem).First().Idoccupieditem;
+        }
+
+        public void OccupieHotel(OccupieItemDto booking)
+        {
+            Occupieditem occupiedItem = new Occupieditem();
+            occupiedItem.Idoccupieditem = GetLastOccupiedItemId() + 1;
+            occupiedItem.Idbookingitem = booking.IdBookingItem;
+            occupiedItem.Idbooking = booking.IdBooking;
+            occupiedItem.Idtimeslot = booking.IdTimeSlot;
+            _context.Occupieditem.Add(occupiedItem);
+
+        }
+
         public bool SaveChanges()
         {
             try

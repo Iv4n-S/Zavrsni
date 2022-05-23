@@ -16,5 +16,7 @@ namespace ZavrsniApi.Repos
         string GetLocation(int idLocation);
         IEnumerable<Hotel> GetSearchedHotels(HotelSearchFiltersDto filters);
         IEnumerable<Hotel> GetHotel(HotelRoomsInHotelDto hotelSelected);
+        int GetLastBookingId();
+        bool BookHotelRoom(BookHotelDto booking);
     }
 }

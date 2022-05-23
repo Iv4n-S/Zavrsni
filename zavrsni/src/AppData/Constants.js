@@ -13,6 +13,7 @@ const API_CONFIG = {
     getHotel: "/api/hotel/getHotel/",
     currentUser: "/api/user/currentUser/",
     locationEndpoint: "/api/location/",
+    bookHotel: "/api/hotel/bookHotelRoom/",
   };
   
   export { NETWORK_CONFIG, API_CONFIG };

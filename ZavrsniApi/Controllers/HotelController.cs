@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using ZavrsniApi.DtoModels;
 using ZavrsniApi.Repos;
@@ -24,13 +26,15 @@ namespace ZavrsniApi.Controllers
         private readonly IMapper _mapper;
         private readonly IHostingEnvironment _env;
         private string _dir;
+        private readonly IEmailRepo _email_repository;
 
-        public HotelController(IHotelRepo repository, IMapper mapper, IHostingEnvironment env)
+        public HotelController(IHotelRepo repository, IMapper mapper, IHostingEnvironment env, IEmailRepo emailRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _env = env;
             _dir = Path.Combine(_env.ContentRootPath, "Images");
+            _email_repository = emailRepository;
         }
 
         [HttpGet]
@@ -47,18 +51,18 @@ namespace ZavrsniApi.Controllers
                     hotel.image = (IEnumerable<ReturnImage>)image.Value;
                     hotel.Location = _repository.GetLocation(hotel.IdLocation);
                 }
-                
+
                 return Ok(hotels);
             }
             return NotFound();
         }
 
-        [HttpPost] 
+        [HttpPost]
         [Route("filteredHotels")]
         public ActionResult<IEnumerable<HotelDto>> GetFilteredHotels(HotelSearchFiltersDto filters)
         {
             var result = _repository.GetSearchedHotels(filters);
-            if(result != null)
+            if (result != null)
             {
                 var hotels = _mapper.Map<IEnumerable<HotelDto>>(result);
                 foreach (var hotel in hotels)
@@ -78,7 +82,7 @@ namespace ZavrsniApi.Controllers
         public ActionResult GetHotel(HotelRoomsInHotelDto hotelSelected)
         {
             var result = _repository.GetHotel(hotelSelected);
-            if(result != null)
+            if (result != null)
             {
                 var hotelRooms = _mapper.Map<IEnumerable<HotelDto>>(result);
                 foreach (var hotelRoom in hotelRooms)
@@ -126,9 +130,9 @@ namespace ZavrsniApi.Controllers
             }
             return Ok();
         }
-        
+
         [HttpGet]
-        [Route("getImages/{idHotelRoom}")] 
+        [Route("getImages/{idHotelRoom}")]
         public ActionResult<IEnumerable<ReturnImage>> GetImages(int idHotelRoom)
         {
             var images = _repository.GetImagesForHotelRoom(idHotelRoom);
@@ -141,6 +145,39 @@ namespace ZavrsniApi.Controllers
             }
             return Ok(imagesResult);
 
+        }
+
+        [HttpPost]
+        [Route("bookHotelRoom")]
+        [Authorize]
+        public async Task<ActionResult> BookHotelRoom(BookingHotelDto hotelRoom)
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                int id = int.Parse(identity.Claims.FirstOrDefault(i => i.Type == ClaimTypes.Sid)?.Value);
+                BookHotelDto booking = _mapper.Map<BookHotelDto>(hotelRoom);
+                booking.IdUser = id;
+                var result =_repository.BookHotelRoom(booking);
+                if(!result)
+                {
+                    return Conflict();
+                }
+                _repository.SaveChanges();
+
+                EmailDto options = new EmailDto
+                {
+                    ToEmail = identity.Claims.FirstOrDefault(i => i.Type == ClaimTypes.Email)?.Value,
+                    PlaceHolders = new List<KeyValuePair<string, string>>()
+                    {
+                        new KeyValuePair<string, string>("{{UserName}}", identity.Claims.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier)?.Value)
+                    }
+                };
+                await _email_repository.SendEmailToUser(options);
+            }
+
+
+            return Ok();
         }
     }
 }

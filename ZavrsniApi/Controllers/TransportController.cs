@@ -23,25 +23,14 @@ namespace ZavrsniApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [Route("types")]
-        public ActionResult<IEnumerable<Transporttypes>> GetAllTransportTypes()
+        [HttpPost]
+        [Route("filteredTransports")]
+        public ActionResult<IEnumerable<TransportsDto>> GetAllTransports(TransportFiltersDto filters)
         {
-            var result = _repository.GetAllTransportTypes();
+            var result = _repository.GetFilteredTransports(filters);
             if (result != null)
             {
-                return Ok(_mapper.Map<IEnumerable<TransportTypesDto>>(result));
-            }
-            return NotFound();
-        }
-
-        [HttpGet]
-        public ActionResult<IEnumerable<Transport>> GetAllTransports()
-        {
-            var result = _repository.GetAllTransports();
-            if (result != null)
-            {
-                return Ok(result/*_mapper.Map<IEnumerable<TransportTypesDto>>(result)*/);
+                return Ok(result);
             }
             return NotFound();
         }

@@ -9,6 +9,7 @@ import PostImage from "./Pages/[temp]PostImage";
 import UserPage from "./Pages/UserPage";
 import Hotels from "./Pages/Hotels";
 import HotelPage from "./Pages/HotelPage";
+import Transport from "./Pages/Transport";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -55,6 +56,9 @@ function App() {
                     </Routes>
                     <Routes>
                         <Route path="/user" element={isLoggedIn  ? <UserPage /> : <Navigate to="/" replace />} />
+                    </Routes>
+                    <Routes>
+                        <Route path="/transport" element={<Transport />} />
                     </Routes>
                     <Routes>
                         <Route path="/hotels" element={<Hotels />} />

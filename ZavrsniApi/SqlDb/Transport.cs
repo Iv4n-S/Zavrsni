@@ -14,6 +14,8 @@ namespace ZavrsniApi
         public int Idtransporttype { get; set; }
         public int Idlocationfrom { get; set; }
         public int Idlocationto { get; set; }
+        public int Capacity { get; set; }
+        public string DepartureTime { get; set; }
 
         public virtual Location IdlocationfromNavigation { get; set; }
         public virtual Location IdlocationtoNavigation { get; set; }

@@ -10,9 +10,7 @@ namespace ZavrsniApi
     public partial class Hotelroomimages
     {
         public int Idimage { get; set; }
-        public string ImageName { get; set; }
         public int? Idhotelroom { get; set; }
-
-        public virtual Hotel IdhotelroomNavigation { get; set; }
+        public string Imagename { get; set; }
     }
 }

@@ -8,6 +8,7 @@ const API_CONFIG = {
     userEndpoint: "/api/user",
     loginEndpoint: "/api/login",
     postImage: "/api/hotel/imagePost/",
+    searchTransports: "/api/transport/filteredTransports",
     topTenHotels: "/api/hotel/topTen/",
     searchHotels: "/api/hotel/filteredHotels/",
     getHotel: "/api/hotel/getHotel/",

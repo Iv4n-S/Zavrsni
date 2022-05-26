@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ZavrsniApi.DtoModels;
 
 namespace ZavrsniApi.Repos
 {
     public interface ITransportRepo
     {
         bool SaveChanges();
-        IEnumerable<Transporttypes> GetAllTransportTypes();
-        IEnumerable<Transport> GetAllTransports();
+        IEnumerable<TransportsDto> GetFilteredTransports(TransportFiltersDto filters);
 
     }
 }

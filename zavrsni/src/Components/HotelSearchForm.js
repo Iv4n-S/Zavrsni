@@ -9,7 +9,7 @@ import { LocationMarkerIcon } from "@heroicons/react/solid";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import dateFormat from "dateformat";
-import add from 'date-fns/add'
+import add from 'date-fns/add';
 
 function HotelSearchForm(props) {
     let navigate = useNavigate();

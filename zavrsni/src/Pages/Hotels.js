@@ -13,7 +13,7 @@ function Hotels(props) {
 
     return(
         <div className="flex flex-col justify-center">
-            <div>
+            <div className="z-50">
                 <HotelSearchForm setSelectedDates={setSelectedDates} setFilteredHotels={setFilteredHotels} className="absolute"/>
             </div>
             <div className="flex justify-center">

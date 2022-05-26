@@ -6,6 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import dateFormat from "dateformat";
 import add from 'date-fns/add'
 
+
 function HotelDateSelectionForm(props) {
     const [dateFrom, setDateFrom] = React.useState(new Date());
     const [dateTo, setDateTo] = React.useState(add(new Date(), { days: 1 }));
@@ -25,7 +26,7 @@ function HotelDateSelectionForm(props) {
 
     return (
         <div className="flex justify-center">
-            <Card className="md:w-1/3 w-auto">
+            <Card className="md:w-3/4 w-auto">
                 <div className="flex items-center w-full mb-2">
                     <div className="w-full">
                         <span>Date from </span>
@@ -34,7 +35,7 @@ function HotelDateSelectionForm(props) {
                         <span>Date to </span>
                     </div>
                 </div>
-                <div className="flex relative items-center w-full">
+                <div className="flex items-center w-full">
                     <DatePicker 
                         className="border-2 rounded-sm p-2 w-5/6 border-gray-400 hover:border-gray-600"
                         selected={dateFrom} 

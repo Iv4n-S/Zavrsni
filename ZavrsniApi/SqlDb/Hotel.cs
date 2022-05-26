@@ -17,9 +17,6 @@ namespace ZavrsniApi
         public int Idlocation { get; set; }
         public int IdHotel { get; set; }
 
-
         public virtual Location IdlocationNavigation { get; set; }
-        public virtual ICollection<Hotelroomimages> Hotelroomimages { get; set; }
-
     }
 }

@@ -14,6 +14,7 @@ namespace ZavrsniApi.Profiles
         public TransportProfile()
         {
             CreateMap<Transporttypes, TransportTypesDto>();
+            CreateMap<Transport, TransportsDto>();
         }
 
     }

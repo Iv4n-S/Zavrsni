@@ -17,11 +17,7 @@ namespace ZavrsniApi
 
         public int Idtimeslot { get; set; }
         public DateTime Itemdate { get; set; }
-        public DateTime? Departuretime { get; set; }
-        public string Departuretimedesc { get; set; }
-        public int Idtimeslottype { get; set; }
 
-        public virtual Timeslottypes IdtimeslottypeNavigation { get; set; }
         public virtual ICollection<Booking> Booking { get; set; }
         public virtual ICollection<Occupieditem> Occupieditem { get; set; }
     }

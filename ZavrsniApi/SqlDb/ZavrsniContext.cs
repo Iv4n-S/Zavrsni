@@ -26,7 +26,6 @@ namespace ZavrsniApi
         public virtual DbSet<Location> Location { get; set; }
         public virtual DbSet<Occupieditem> Occupieditem { get; set; }
         public virtual DbSet<Timeslots> Timeslots { get; set; }
-        public virtual DbSet<Timeslottypes> Timeslottypes { get; set; }
         public virtual DbSet<Transport> Transport { get; set; }
         public virtual DbSet<Transporttypes> Transporttypes { get; set; }
         public virtual DbSet<Userdata> Userdata { get; set; }
@@ -57,13 +56,13 @@ namespace ZavrsniApi
 
                 entity.Property(e => e.Idbookingtype).HasColumnName("idbookingtype");
 
+                entity.Property(e => e.Idhotel).HasColumnName("idhotel");
+
                 entity.Property(e => e.Idtimeslot).HasColumnName("idtimeslot");
 
                 entity.Property(e => e.Iduser).HasColumnName("iduser");
 
                 entity.Property(e => e.Timecreated).HasColumnName("timecreated");
-
-                entity.Property(e => e.IdHotel).HasColumnName("idhotel");
 
                 entity.HasOne(d => d.IdbookingtypeNavigation)
                     .WithMany(p => p.Booking)
@@ -150,15 +149,10 @@ namespace ZavrsniApi
 
                 entity.Property(e => e.Idhotelroom).HasColumnName("idhotelroom");
 
-                entity.Property(e => e.ImageName)
+                entity.Property(e => e.Imagename)
                     .IsRequired()
                     .HasColumnName("imagename")
                     .HasMaxLength(1024);
-
-                entity.HasOne(d => d.IdhotelroomNavigation)
-                    .WithMany(p => p.Hotelroomimages)
-                    .HasForeignKey(d => d.Idhotelroom)
-                    .HasConstraintName("hotelroomimages_idhotelroom_fkey");
             });
 
             modelBuilder.Entity<Location>(entity =>
@@ -219,40 +213,9 @@ namespace ZavrsniApi
                     .HasColumnName("idtimeslot")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.Departuretime).HasColumnName("departuretime");
-
-                entity.Property(e => e.Departuretimedesc)
-                    .HasColumnName("departuretimedesc")
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Idtimeslottype).HasColumnName("idtimeslottype");
-
                 entity.Property(e => e.Itemdate)
                     .HasColumnName("itemdate")
                     .HasColumnType("date");
-
-                entity.HasOne(d => d.IdtimeslottypeNavigation)
-                    .WithMany(p => p.Timeslots)
-                    .HasForeignKey(d => d.Idtimeslottype)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("timeslots_idtimeslottype_fkey");
-            });
-
-            modelBuilder.Entity<Timeslottypes>(entity =>
-            {
-                entity.HasKey(e => e.Idtimeslottype)
-                    .HasName("timeslottypes_pkey");
-
-                entity.ToTable("timeslottypes");
-
-                entity.Property(e => e.Idtimeslottype)
-                    .HasColumnName("idtimeslottype")
-                    .ValueGeneratedNever();
-
-                entity.Property(e => e.Timeslottypename)
-                    .IsRequired()
-                    .HasColumnName("timeslottypename")
-                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Transport>(entity =>
@@ -265,6 +228,13 @@ namespace ZavrsniApi
                 entity.Property(e => e.Idtransport)
                     .HasColumnName("idtransport")
                     .ValueGeneratedNever();
+
+                entity.Property(e => e.Capacity).HasColumnName("capacity");
+
+                entity.Property(e => e.DepartureTime)
+                    .IsRequired()
+                    .HasColumnName("departureTime")
+                    .HasMaxLength(50);
 
                 entity.Property(e => e.Idlocationfrom).HasColumnName("idlocationfrom");
 

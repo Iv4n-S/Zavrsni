@@ -20,7 +20,7 @@ namespace ZavrsniApi
         public int Idbookingtype { get; set; }
         public int Iduser { get; set; }
         public int Idtimeslot { get; set; }
-        public int IdHotel { get; set; }
+        public int Idhotel { get; set; }
 
         public virtual Bookingtype IdbookingtypeNavigation { get; set; }
         public virtual Timeslots IdtimeslotNavigation { get; set; }

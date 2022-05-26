@@ -122,7 +122,7 @@ namespace ZavrsniApi.Controllers
                 _repository.InsertImages(new Hotelroomimages
                 {
                     Idimage = lastImageId++,
-                    ImageName = imageName,
+                    Imagename = imageName,
                     Idhotelroom = idHotelRoom
                 });
                 _repository.SaveChanges();
@@ -140,7 +140,7 @@ namespace ZavrsniApi.Controllers
 
             foreach (var image in images)
             {
-                string original = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, image.ImageName);
+                string original = String.Format("{0}://{1}{2}/Images/{3}", Request.Scheme, Request.Host, Request.PathBase, image.Imagename);
                 imagesResult = imagesResult.Append(new ReturnImage { original = original });
             }
             return Ok(imagesResult);

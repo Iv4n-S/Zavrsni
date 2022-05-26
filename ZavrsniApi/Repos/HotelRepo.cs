@@ -23,7 +23,7 @@ namespace ZavrsniApi.Repos
 
         public IEnumerable<Hotel> GetTenMostBookedHotelsLastWeek()
         {
-            IEnumerable<int> idHotels = _context.Booking.Where(b => b.Timecreated > DateTime.Today.AddDays(-7) && b.Idbookingtype == 2).Select(b => b.IdHotel).ToList();
+            IEnumerable<int> idHotels = _context.Booking.Where(b => b.Timecreated > DateTime.Today.AddDays(-7) && b.Idbookingtype == 2).Select(b => b.Idhotel).ToList();
             Dictionary<int, int> bookingsPerHotel = new Dictionary<int, int>();
             foreach (var idHotel in idHotels)
             {
@@ -53,7 +53,7 @@ namespace ZavrsniApi.Repos
         public IEnumerable<Hotel> GetHotel(HotelRoomsInHotelDto hotelSelected)
         {
             var hotelRoomsInHotel = _context.Hotel.Where(h => h.IdHotel == hotelSelected.IdHotel).ToList();
-            IEnumerable<int> timeSlots = _context.Timeslots.Where(t => t.Idtimeslottype == 1 && hotelSelected.SelectedDates.Contains(t.Itemdate)).Select(t => t.Idtimeslot).ToList();
+            IEnumerable<int> timeSlots = _context.Timeslots.Where(t => hotelSelected.SelectedDates.Contains(t.Itemdate)).Select(t => t.Idtimeslot).ToList();
             IEnumerable<Hotel> hotelRooms = new Hotel[] { };
 
             foreach (var hotelRoom in hotelRoomsInHotel)
@@ -95,7 +95,8 @@ namespace ZavrsniApi.Repos
 
         public IEnumerable<Hotelroomimages> GetImagesForHotelRoom(int idHotelRoom)
         {
-            return _context.Hotelroomimages.Where(i => i.Idhotelroom == idHotelRoom).ToList();
+            var images = _context.Hotelroomimages.Where(i => i.Idhotelroom == idHotelRoom).ToList();
+            return images;
         }
 
         public string GetLocation(int idLocation)
@@ -108,7 +109,7 @@ namespace ZavrsniApi.Repos
             int IdLocation = _context.Location.Where(l => l.Locationname.ToLower().Equals(filters.Location.ToLower())).Select(l => l.Idlocation).FirstOrDefault();
             var hotelsInLocation = _context.Hotel.Where(h => h.Idlocation == IdLocation).ToList();
             IEnumerable<Hotel> hotels  = new Hotel[] { };
-            IEnumerable<int> timeSlots = _context.Timeslots.Where(t => t.Idtimeslottype == 1 && filters.SelectedDates.Contains(t.Itemdate)).Select(t => t.Idtimeslot).ToList();
+            IEnumerable<int> timeSlots = _context.Timeslots.Where(t => filters.SelectedDates.Contains(t.Itemdate)).Select(t => t.Idtimeslot).ToList();
 
             foreach(var hotelInLocation in hotelsInLocation)
             {
@@ -144,7 +145,7 @@ namespace ZavrsniApi.Repos
             {
                 throw new ArgumentNullException(nameof(bookingHotel));
             }
-            IEnumerable<int> timeSlots = _context.Timeslots.Where(t => t.Idtimeslottype == 1 && bookingHotel.SelectedDates.Contains(t.Itemdate))
+            IEnumerable<int> timeSlots = _context.Timeslots.Where(t => bookingHotel.SelectedDates.Contains(t.Itemdate))
                     .Select(t => t.Idtimeslot).ToList();
             bool exists = _context.Occupieditem.Where(o => o.Idbookingitem == bookingHotel.IdHotelRoom && timeSlots.Contains(o.Idtimeslot)).Any();
             if (!exists)
@@ -159,7 +160,7 @@ namespace ZavrsniApi.Repos
                     booking.Idbookingtype = 2;
                     booking.Iduser = bookingHotel.IdUser;
                     booking.Idtimeslot = timeSlot;
-                    booking.IdHotel = bookingHotel.IdHotel;
+                    booking.Idhotel = bookingHotel.IdHotel;
                     _context.Booking.Add(booking);
                     OccupieHotel(new OccupieItemDto { IdBookingItem = bookingHotel.IdHotelRoom, IdBooking = booking.Idbooking, IdTimeSlot = timeSlot });
                 }

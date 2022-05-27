@@ -15,6 +15,7 @@ const API_CONFIG = {
     currentUser: "/api/user/currentUser/",
     locationEndpoint: "/api/location/",
     bookHotel: "/api/hotel/bookHotelRoom/",
+    bookTransport: "/api/transport/bookTransport/",
   };
   
   export { NETWORK_CONFIG, API_CONFIG };

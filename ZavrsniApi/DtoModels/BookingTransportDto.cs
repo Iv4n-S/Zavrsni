@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace ZavrsniApi.DtoModels
 {
-    public class TransportTypesDto
+    public class BookingTransportDto
     {
-        public int Idtransporttype { get; set; }
-        public string TransportTypeName { get; set; }
-
+        public int IdTransport { get; set; }
+        public DateTime SelectedDate { get; set; }
     }
 }

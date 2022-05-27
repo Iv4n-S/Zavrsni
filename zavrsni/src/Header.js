@@ -10,6 +10,7 @@ import {
     MapIcon
 } from "@heroicons/react/solid";
 import cx from "classnames";
+import CarIcon from "./Components/CarIcon.js";
 
 
 function Header(props) {
@@ -46,7 +47,7 @@ function Header(props) {
                         <Button label="HOME" icon={<HomeIcon />} className="space-x-2" />
                     </Link>
                     <Link to="/transport">
-                        <Button label="TRANSPORT" icon={<MapIcon />} className="space-x-2" />
+                        <Button label="TRANSPORT" icon={<CarIcon className="x-2"/>} className="space-x-2" />
                     </Link>
                     <Link to="/hotels">
                         <Button label="HOTELS" icon={<OfficeBuildingIcon />} className="space-x-2" />
@@ -90,7 +91,7 @@ function Header(props) {
                         <Button label="HOME" icon={<HomeIcon />} className="space-x-2" />
                     </Link>
                     <Link to="/transport">
-                        <Button label="TRANSPORT" icon={<MapIcon />} className="space-x-2" />
+                        <Button label="TRANSPORT" icon={<CarIcon className="x-2" />} className="space-x-2" />
                     </Link>
                     <Link to="/hotels">
                         <Button label="HOTELS" icon={<OfficeBuildingIcon />} className="space-x-2" />

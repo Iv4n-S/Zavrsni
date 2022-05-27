@@ -18,9 +18,9 @@ function Hotels(props) {
             </div>
             <div className="flex justify-center">
                 {filteredHotels == undefined ? (<></>) : (
-                <Card className="md:w-2/3 w-auto">
-                    <HotelsList hotels={filteredHotels} selectedDates={selectedDates} />
-                </Card>
+                    <Card className="md:w-2/3 w-auto">
+                        <HotelsList hotels={filteredHotels} selectedDates={selectedDates} />
+                    </Card>
                 )}
             </div>
         </div>

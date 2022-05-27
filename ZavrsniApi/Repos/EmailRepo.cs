@@ -13,7 +13,7 @@ namespace ZavrsniApi.Repos
 {
     public class EmailRepo: IEmailRepo
     {
-        private const string templatePath = @"EmailTemplate/HotelBookingTemplate.html";
+        private const string templatePath = @"EmailTemplate/BookingTemplate.html";
         private readonly SMTPConfigDto _smtpConfig;
 
         public EmailRepo(IOptions<SMTPConfigDto> smtpConfig)

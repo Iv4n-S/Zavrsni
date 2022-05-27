@@ -9,7 +9,9 @@ namespace ZavrsniApi.Repos
     public interface ITransportRepo
     {
         bool SaveChanges();
+        IEnumerable<TransportTypesDto> GetTransportTypes();
         IEnumerable<TransportsDto> GetFilteredTransports(TransportFiltersDto filters);
-
+        int GetLastBookingId();
+        bool BookTransport(BookTransportDto booking);
     }
 }

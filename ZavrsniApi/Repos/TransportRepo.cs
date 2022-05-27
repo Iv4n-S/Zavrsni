@@ -18,6 +18,50 @@ namespace ZavrsniApi.Repos
             _mapper = mapper;
         }
 
+        public bool BookTransport(BookTransportDto booking)
+        {
+            if (booking == null)
+            {
+                throw new ArgumentNullException(nameof(booking));
+            }
+            int timeSlot = _context.Timeslots.Where(t => booking.SelectedDate.Equals(t.Itemdate)).Select(t => t.Idtimeslot).FirstOrDefault();
+            Transport selectedTransport = _context.Transport.Where(t => t.Idtransport == booking.IdTransport).FirstOrDefault();
+            if(_context.Occupieditem.Where(o => o.Idbookingitem == booking.IdTransport && o.Idtimeslot == timeSlot).Count() < selectedTransport.Capacity)
+            {
+                var bookingId = GetLastBookingId() + 1;
+                _context.Booking.Add(new Booking
+                {
+                    Idbooking = bookingId,
+                    Idbookingitem = booking.IdTransport,
+                    Timecreated = DateTime.Now,
+                    Idbookingtype = 1,
+                    Iduser = booking.IdUser,
+                    Idtimeslot = timeSlot,
+                    Idhotel = null
+                });
+                OccupieTransport(new OccupieItemDto { IdBookingItem = booking.IdTransport, IdBooking = bookingId, IdTimeSlot = timeSlot });
+                
+                return true;
+            }
+            return false;
+        }
+
+        public int GetLastOccupiedItemId()
+        {
+            return _context.Occupieditem.OrderByDescending(o => o.Idoccupieditem).First().Idoccupieditem;
+        }
+
+        public void OccupieTransport(OccupieItemDto booking)
+        {
+            var occupiedItemId = GetLastOccupiedItemId() + 1;
+            _context.Occupieditem.Add(new Occupieditem {
+                Idoccupieditem = occupiedItemId,
+                Idbookingitem = booking.IdBookingItem,
+                Idbooking = booking.IdBooking,
+                Idtimeslot = booking.IdTimeSlot,
+            }); 
+        }
+
         public IEnumerable<TransportsDto> GetFilteredTransports(TransportFiltersDto filters)
         {
             var travelDate = _context.Timeslots.Where(t => t.Itemdate.Equals(filters.SelectedDate)).Select(t => t.Idtimeslot).FirstOrDefault();
@@ -30,7 +74,6 @@ namespace ZavrsniApi.Repos
 
             foreach (var transport in transportsMapped)
             {
-                var count = _context.Occupieditem.Where(o => o.Idbookingitem == transport.Idtransport && o.Idtimeslot == travelDate).Count();
                 if (_context.Occupieditem.Where(o => o.Idbookingitem == transport.Idtransport && o.Idtimeslot == travelDate).Count() < transport.Capacity)
                 {
                     transport.LocationFrom = filters.LocationFrom;
@@ -40,6 +83,16 @@ namespace ZavrsniApi.Repos
             }
 
             return transportsAvailable;
+        }
+
+        public int GetLastBookingId()
+        {
+            return _context.Booking.OrderByDescending(b => b.Idbooking).First().Idbooking;
+        }
+
+        public IEnumerable<TransportTypesDto> GetTransportTypes()
+        {
+            return _mapper.Map<IEnumerable<TransportTypesDto>>(_context.Transporttypes.ToList());
         }
 
         public bool SaveChanges()

@@ -23,19 +23,18 @@ namespace ZavrsniApi.Repos
 
         public IEnumerable<Hotel> GetTenMostBookedHotelsLastWeek()
         {
-            IEnumerable<int> idHotels = _context.Booking.Where(b => b.Timecreated > DateTime.Today.AddDays(-7) && b.Idbookingtype == 2).Select(b => b.Idhotel).ToList();
+            IEnumerable<int?> idHotels = _context.Booking.Where(b => b.Timecreated > DateTime.Today.AddDays(-7) && b.Idbookingtype == 2).Select(b => b.Idhotel).ToList();
             Dictionary<int, int> bookingsPerHotel = new Dictionary<int, int>();
             foreach (var idHotel in idHotels)
             {
                 int value = 1;
-                if (bookingsPerHotel.ContainsKey(idHotel))
+                if (bookingsPerHotel.ContainsKey(idHotel.Value))
                 {
-                    bookingsPerHotel.TryGetValue(idHotel, out value);
+                    bookingsPerHotel.TryGetValue(idHotel.Value, out value);
                     value++;
                 }
-                bookingsPerHotel[idHotel] = value;
+                bookingsPerHotel[idHotel.Value] = value;
             }
-
             IEnumerable<Hotel> hotels = _context.Hotel.AsEnumerable().Where(h => bookingsPerHotel.ContainsKey(h.IdHotel))
                 .OrderByDescending(h => bookingsPerHotel[h.IdHotel]).Take(10);
             IEnumerable<Hotel> hotelsDistinct = new Hotel[] { };
@@ -176,13 +175,14 @@ namespace ZavrsniApi.Repos
 
         public void OccupieHotel(OccupieItemDto booking)
         {
-            Occupieditem occupiedItem = new Occupieditem();
-            occupiedItem.Idoccupieditem = GetLastOccupiedItemId() + 1;
-            occupiedItem.Idbookingitem = booking.IdBookingItem;
-            occupiedItem.Idbooking = booking.IdBooking;
-            occupiedItem.Idtimeslot = booking.IdTimeSlot;
-            _context.Occupieditem.Add(occupiedItem);
-
+            var occupiedItemId = GetLastOccupiedItemId() + 1;
+            _context.Occupieditem.Add(new Occupieditem
+            {
+                Idoccupieditem = occupiedItemId,
+                Idbookingitem = booking.IdBookingItem,
+                Idbooking = booking.IdBooking,
+                Idtimeslot = booking.IdTimeSlot,
+            });
         }
 
         public bool SaveChanges()

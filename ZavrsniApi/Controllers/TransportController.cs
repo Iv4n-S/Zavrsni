@@ -27,6 +27,18 @@ namespace ZavrsniApi.Controllers
             _email_repository = email_repository;
         }
 
+        [HttpGet]
+        [Route("transportTypes")]
+        public ActionResult<IEnumerable<TransportTypesDto>> GetTransportTypes()
+        {
+            var result = _repository.GetTransportTypes();
+            if(result != null)
+            {
+                return Ok(result);
+            }
+            return NotFound();
+        }
+
         [HttpPost]
         [Route("filteredTransports")]
         public ActionResult<IEnumerable<TransportsDividedDto>> GetAllTransports(TransportFiltersDto filters)
@@ -46,7 +58,10 @@ namespace ZavrsniApi.Controllers
                             transportOfType = transportOfType.Append(transport);
                         }
                     }
-                    transportsDivided = transportsDivided.Append(new TransportsDividedDto { TransportType = type.TransportTypeName, Transports = transportOfType });
+                    if (transportOfType.Count() != 0)
+                    {
+                        transportsDivided = transportsDivided.Append(new TransportsDividedDto { TransportType = type.TransportTypeName, Transports = transportOfType });
+                    }
                 }
                 return Ok(transportsDivided);
             }
@@ -77,7 +92,8 @@ namespace ZavrsniApi.Controllers
                     ToEmail = identity.Claims.FirstOrDefault(i => i.Type == ClaimTypes.Email)?.Value,
                     PlaceHolders = new List<KeyValuePair<string, string>>()
                     {
-                        new KeyValuePair<string, string>("{{UserName}}", identity.Claims.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier)?.Value)
+                        new KeyValuePair<string, string>("{{UserName}}", identity.Claims.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier)?.Value),
+                        new KeyValuePair<string, string>("{{bookingObject}}", _repository.GetTransportNameById(transport.IdTransport))
                     }
                 };
                 await _email_repository.SendEmailToUser(options);

@@ -196,5 +196,10 @@ namespace ZavrsniApi.Repos
                 return false;
             }
         }
+
+        public string GetHotelNameById(int idhotelroom)
+        {
+            return _context.Hotel.Where(h => h.Idhotelroom == idhotelroom).FirstOrDefault().Hotelname;
+        }
     }
 }

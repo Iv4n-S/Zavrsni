@@ -10,11 +10,14 @@ import DatePicker from "react-datepicker";
 import dateFormat from "dateformat";
 import 'react-datepicker/dist/react-datepicker.css';
 
+
 function TransportSearchForm(props) {
     let navigate = useNavigate();
     const [error, setError] = React.useState("");
     const [travelDate, setTravelDate] = React.useState(new Date());
     const [travelLocation, setTravelLocation] = React.useState([]);
+    const [transportTypes, setTransportTypes] = React.useState([]);
+    const [transportTypesList, setTransportTypesList] = React.useState([]);
     const [locationFromSearch, setLocationFromSearch] = React.useState("");
     const [locationToSearch, setLocationToSearch] = React.useState("");
     const [displayFrom, setDisplayFrom] = React.useState(false);
@@ -43,6 +46,27 @@ function TransportSearchForm(props) {
             setError("Fetching locations failed!");
             navigate("/");
         })
+        const optionsTransportTypes = {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+        };
+        fetch(NETWORK_CONFIG.apiFullHost + API_CONFIG.getTransportTypes, optionsTransportTypes)
+        .then((response) => {
+            if(!response.ok) {
+                setError("Fetching transport types failed!");
+            }
+            else {
+                response.json()
+                .then((value) => {
+                    setTransportTypes(value);        
+                })
+            }
+
+        }).catch(() => {
+            setError("Fetching transport types failed!");
+            navigate("/");
+        })
+
     }, []);
 
     React.useEffect(() => {
@@ -87,12 +111,27 @@ function TransportSearchForm(props) {
         "flex flex-col items-center w-full": true,
     });
 
+    function UpdateTransportTypesList(transportType) {
+        if(transportTypesList.includes(transportType)) {
+            transportTypesList.splice(transportTypesList.lastIndexOf(transportType), 1);
+        }
+        else {
+            transportTypesList.push(transportType)
+        }
+    }
+
     function onSubmit() {
         if(locationFromSearch == "") {
-            setError("Location From is required!")
+            setError("Location From is required!");
         }
         else if(locationToSearch == "") {
-            setError("Location To is required!")
+            setError("Location To is required!");
+        }
+        else if(transportTypesList.length == 0) {
+            setError("Transport type is required!");
+        }
+        else if (locationFromSearch == locationToSearch ) {
+            setError("Departure location can't be the same as arrival location!");
         }
         else {
             setError("");
@@ -101,10 +140,16 @@ function TransportSearchForm(props) {
 
             props.setSelectedDate(travelDateParsed);
 
+            var transportTypesId = [];
+            for(var type of transportTypesList) {
+                transportTypesId.push(type.idtransporttype);
+            }
+
             const body = `{
                 "SelectedDate": ${travelDateParsed},
                 "LocationFrom": "${locationFromSearch}",
-                "LocationTo": "${locationToSearch}"
+                "LocationTo": "${locationToSearch}",
+                "TransportTypes": [${transportTypesId}]
             }`;
     
             const options = {
@@ -120,10 +165,14 @@ function TransportSearchForm(props) {
                     }
                     else {
                         response.json().then((value) => {
-                            props.setFilteredTransports(value);
-                            console.log(value);
-                            setLocationFromSearch("");
-                            setLocationToSearch("");
+                            if(value.length == 0) {
+                                setError(`No transports available from ${locationFromSearch} to ${locationToSearch} on selected date`)
+                            }
+                            else {
+                                props.setFilteredTransports(value);
+                                setLocationFromSearch("");
+                                setLocationToSearch("");
+                            }
                         })
                     }})
                 .catch(() => {
@@ -217,9 +266,25 @@ function TransportSearchForm(props) {
                         )}
                     </div>
                 </div>
+                <div className={FormStyle}>
+                    <div className="w-2/3">
+                        <p className="my-2">Select wanted transport types</p>
+                        {transportTypes.map((transportType, i) => (
+                            <div className="flex flex-row justify-start align-middle" key={i}>
+                                <div className="flex">
+                                    <input type="checkbox" className="w-6 h-6 mr-2 my-1" onChange={() => UpdateTransportTypesList(transportType)}/> 
+                                    <span className=""> {transportType.transportTypeName}</span>
+                                </div>
+                            </div>
+                            ))
+                        }
+                    </div> 
+                </div>
                 {error && (
-                    <div className="border-red-100 rounded p-2 text-red-700 mb-2 bg-red-100">
-                        {error}
+                    <div className="flex justify-center mt-2">
+                        <div className="border-red-100 rounded p-2 text-red-700 mb-2 bg-red-100 w-2/3">
+                            {error}
+                        </div>
                     </div>
                 )}
                 <div className="flex justify-center pt-2 mt-2">

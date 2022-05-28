@@ -4,8 +4,7 @@ import Button from "../Components/Button";
 import Card from "../Components/Card";
 import TransportSearchForm from "../Components/TransportSearchForm";
 import TransportList from "../Components/TransportList";
-import dateFormat from "dateformat";
-
+import { NETWORK_CONFIG, API_CONFIG } from "../AppData/Constants";
 
 function Transport(props) {
     let navigate = useNavigate();
@@ -16,13 +15,10 @@ function Transport(props) {
 
 
     function BookTransport() {
-        console.log(selectedTransport);
-        console.log(selectedDate);
-
         if(selectedTransport == null) {
             setError("Selecting departure time is required!")
         }
-        else {/*
+        else {
             const body = `{
                 "IdTransport": ${selectedTransport.idtransport},
                 "SelectedDate": ${selectedDate}
@@ -51,7 +47,7 @@ function Transport(props) {
                 .catch(() => {
                     alert("Booking failed, try again");
                     navigate("/");
-                });*/
+                });
         }
     }
 

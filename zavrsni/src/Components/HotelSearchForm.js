@@ -101,8 +101,13 @@ function HotelSearchForm(props) {
                     }
                     else {
                         response.json().then((value) => {
-                            props.setFilteredHotels(value);
-                            setLocationSearch("");
+                            if(value.length == 0) {
+                                setError(`No hotels available in ${locationSearch} on selected dates`);
+                            }
+                            else {
+                                props.setFilteredHotels(value);
+                                setLocationSearch("");
+                            }
                         })
                     }})
                 .catch(() => {
@@ -179,8 +184,10 @@ function HotelSearchForm(props) {
                     </div>
                 </div>
                 {error && (
-                    <div className="border-red-100 rounded p-2 text-red-700 mb-2 bg-red-100">
-                        {error}
+                    <div className="flex justify-center">
+                        <div className="border-red-100 rounded p-2 text-red-700 mb-2 bg-red-100 w-2/3 mt-1">
+                            {error}
+                        </div>
                     </div>
                 )}
                 <div className="flex justify-center pt-2 mt-2">

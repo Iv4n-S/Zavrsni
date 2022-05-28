@@ -10,6 +10,7 @@ namespace ZavrsniApi.Repos
     {
         bool SaveChanges();
         IEnumerable<TransportTypesDto> GetTransportTypes();
+        string GetTransportNameById(int idtransport);
         IEnumerable<TransportsDto> GetFilteredTransports(TransportFiltersDto filters);
         int GetLastBookingId();
         bool BookTransport(BookTransportDto booking);

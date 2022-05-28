@@ -67,7 +67,8 @@ namespace ZavrsniApi.Repos
             var travelDate = _context.Timeslots.Where(t => t.Itemdate.Equals(filters.SelectedDate)).Select(t => t.Idtimeslot).FirstOrDefault();
             var locationFromId = _context.Location.Where(l => l.Locationname.Equals(filters.LocationFrom)).Select(l => l.Idlocation).FirstOrDefault();
             var locationToId = _context.Location.Where(l => l.Locationname.Equals(filters.LocationTo)).Select(l => l.Idlocation).FirstOrDefault();
-            var transports = _context.Transport.Where(t => t.Idlocationfrom == locationFromId && t.Idlocationto == locationToId).ToList();
+            var transports = _context.Transport.Where(t => t.Idlocationfrom == locationFromId && t.Idlocationto == locationToId 
+                                && filters.TransportTypes.Contains(t.Idtransporttype)).ToList();
             var transportsMapped = _mapper.Map<IEnumerable<TransportsDto>>(transports);
 
             IEnumerable<TransportsDto> transportsAvailable = new TransportsDto[] { };
@@ -98,6 +99,11 @@ namespace ZavrsniApi.Repos
         public bool SaveChanges()
         {
             return (_context.SaveChanges() >= 0);
+        }
+
+        public string GetTransportNameById(int idtransport)
+        {
+            return _context.Transport.Where(t => t.Idtransport == idtransport).FirstOrDefault().Transportname;
         }
     }
 }

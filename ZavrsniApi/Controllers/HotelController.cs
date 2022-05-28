@@ -170,7 +170,8 @@ namespace ZavrsniApi.Controllers
                     ToEmail = identity.Claims.FirstOrDefault(i => i.Type == ClaimTypes.Email)?.Value,
                     PlaceHolders = new List<KeyValuePair<string, string>>()
                     {
-                        new KeyValuePair<string, string>("{{UserName}}", identity.Claims.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier)?.Value)
+                        new KeyValuePair<string, string>("{{UserName}}", identity.Claims.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier)?.Value),
+                        new KeyValuePair<string, string>("{{bookingObject}}", _repository.GetHotelNameById(hotelRoom.IdHotelRoom))
                     }
                 };
                 await _email_repository.SendEmailToUser(options);

@@ -2,9 +2,9 @@ import * as React from "react"
 
 const CarIcon = (props) => (
   <svg
-    width={32}
-    height={32}
-    viewBox="0 0 8.467 8.467"
+    width={42}
+    height={20}
+    viewBox="2 2 5 3"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >

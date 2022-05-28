@@ -10,6 +10,7 @@ namespace ZavrsniApi.Repos
     {
         bool SaveChanges();
         IEnumerable<Hotel> GetTenMostBookedHotelsLastWeek();
+        string GetHotelNameById(int idhotelroom);
         void InsertImages(Hotelroomimages image);
         int GetLastImageId();
         IEnumerable<Hotelroomimages> GetImagesForHotelRoom(int idHotelRoom);

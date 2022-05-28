@@ -10,5 +10,6 @@ namespace ZavrsniApi.DtoModels
         public DateTime SelectedDate { get; set; }
         public string LocationFrom { get; set; }
         public string LocationTo { get; set; }
+        public IEnumerable<int> TransportTypes { get; set; }
     }
 }

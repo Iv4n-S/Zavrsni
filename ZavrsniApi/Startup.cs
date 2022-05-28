@@ -85,6 +85,7 @@ namespace ZavrsniApi
             services.AddScoped<IHotelRepo, HotelRepo>();
             services.AddScoped<ILocationRepo, LocationRepo>();
             services.AddScoped<IEmailRepo, EmailRepo>();
+            services.AddScoped<IUsersBookingsRepo, UsersBookingsRepo>();
 
             services.Configure<SMTPConfigDto>(Configuration.GetSection("SMTPConfig"));
 

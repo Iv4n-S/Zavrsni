@@ -22,6 +22,7 @@ function HotelDateSelectionForm(props) {
 
         props.setSelectedDates(selectedDatesList);
         props.GetHotelRooms(selectedDatesList);
+        props.setSelectedHotelRoom({hotelroomcapacity: 0});
     }
 
     return (

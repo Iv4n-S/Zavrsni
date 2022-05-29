@@ -53,7 +53,7 @@ function Transport(props) {
 
     return(
         <div className="flex flex-col justify-center">
-            <div className="z-50">
+            <div className="z-40">
                 <TransportSearchForm setFilteredTransports={setFilteredTransports} setSelectedDate={setSelectedDate} />
             </div>
             <div className="flex justify-center">

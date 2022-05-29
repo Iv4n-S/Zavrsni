@@ -51,6 +51,25 @@ namespace ZavrsniApi.Controllers
             
         }
 
+        [HttpDelete]
+        [Route("cancelBooking/{idBooking}")]
+        [Authorize]
+        public ActionResult CancelBooking(int idBooking)
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                int idUser = int.Parse(identity.Claims.FirstOrDefault(i => i.Type == ClaimTypes.Sid)?.Value);
+                var result = _repository.CancelBooking(idBooking, idUser);
+                if (result)
+                {
+                    _repository.SaveChanges();
+                    return Ok();
+                }
+            }
+            return Forbid();
+        }
+
 
 
 

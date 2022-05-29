@@ -104,5 +104,17 @@ namespace ZavrsniApi.Repos
                 return false;
             }
         }
+
+        public bool CancelBooking(int idBooking, int idUser)
+        {
+            var booking = _context.Booking.Where(b => b.Idbooking == idBooking).FirstOrDefault();
+            if(booking.Iduser == idUser)
+            {
+                var occupiedItem = _context.Occupieditem.Where(o => o.Idbooking == idBooking).FirstOrDefault();
+                _context.Occupieditem.Remove(occupiedItem);
+                return true;
+            }
+            return false;
+        }
     }
 }

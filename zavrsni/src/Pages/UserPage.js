@@ -70,38 +70,44 @@ function UserPage(props) {
             setError("New password and repeated password don't match!");
         } 
         else {
-            const body = `{
-                "username": "${user.username}",
-                "email": "${user.email}",
-                "name": "${user.name}",
-                "surname": "${user.surname}",
-                "phoneNumber": "${user.phoneNumber}",
-                "address": "${user.address}",
-                "password": "${user.password}"
-            }`;
+            var confirmation = window.confirm(
+                "Are you sure you want to save these changes?"
+            );
+          
+            if (confirmation) {
+                const body = `{
+                    "username": "${user.username}",
+                    "email": "${user.email}",
+                    "name": "${user.name}",
+                    "surname": "${user.surname}",
+                    "phoneNumber": "${user.phoneNumber}",
+                    "address": "${user.address}",
+                    "password": "${user.password}"
+                }`;
 
-            const options = {
-            method: "PUT",
-            body: body,
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
-            },
-            };
-    
-            fetch(NETWORK_CONFIG.apiFullHost + API_CONFIG.userEndpoint, options)
-            .then((response) => {
-                if (!response.ok) {
-                    setError("Updating profile failed");
-                } else {
-                    navigate("/user");
-                }
-            })
-            .catch((error) => {
-                setError("Updating profile failed");
-            });
-            setEdit(false);
+                const options = {
+                method: "PUT",
+                body: body,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
+                },
+                };
         
+                fetch(NETWORK_CONFIG.apiFullHost + API_CONFIG.userEndpoint, options)
+                .then((response) => {
+                    if (!response.ok) {
+                        setError("Updating profile failed");
+                    } else {
+                        navigate("/user");
+                    }
+                })
+                .catch((error) => {
+                    setError("Updating profile failed");
+                });
+                setEdit(false);
+        
+            }
         }
     }
     

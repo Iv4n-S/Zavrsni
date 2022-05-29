@@ -18,7 +18,7 @@ function Header(props) {
     const [userMenuDisplay, setUserMenuDisplay] = React.useState(false);
     const wrapperRef = React.useRef(null);
     const HeaderStyle = cx({
-        "flex py-4 justify-between align-center drop-shadow bg-cyan-500 text-lg text-white": true,
+        "flex py-4 justify-between align-center drop-shadow bg-cyan-500 text-lg text-white z-50": true,
     });
 
     React.useEffect(() => {
@@ -54,7 +54,7 @@ function Header(props) {
                     </Link>
                 </div>
                 
-                <div className="flex flex-row space-x-4 pr-10">
+                <div className="flex flex-row space-x-4 pr-10 z-50">
                     <div ref={wrapperRef}>
                         <Button label="USER" icon={<UserIcon />} className="space-x-2 pr-10" onClick={() => setUserMenuDisplay(!userMenuDisplay)}/>                  
                         {userMenuDisplay && (
@@ -66,10 +66,10 @@ function Header(props) {
                                     <span>User Profile</span>
                                 </div>
                                 <div
-                                    onClick={() => console.log("User's Posts")}
+                                    onClick={() => navigate("/usersBookings")}
                                     className="flex flex-col items-start w-full border-1 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
                                 >
-                                    <span>User's Posts</span>
+                                    <span>User's Bookings</span>
                                 </div>
                                 <div
                                     onClick={props.logOut}

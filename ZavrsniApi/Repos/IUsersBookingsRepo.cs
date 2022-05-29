@@ -10,6 +10,7 @@ namespace ZavrsniApi.Repos
     {
         bool SaveChanges();
         UsersBookingsDto GetUsersBookings(int userId);
+        bool CancelBooking(int idBooking, int idUser);
 
     }
 }

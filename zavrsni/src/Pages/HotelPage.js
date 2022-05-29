@@ -149,8 +149,8 @@ function HotelPage(props) {
                                     <HotelDateSelectionForm setSelectedDates={setSelectedDates} GetHotelRooms={GetHotelRooms} />
                                 </>) : (
                                 <>
-                                    <div className="z-50">
-                                        <HotelDateSelectionForm setSelectedDates={setSelectedDates} GetHotelRooms={GetHotelRooms} />
+                                    <div className="z-40">
+                                        <HotelDateSelectionForm setSelectedDates={setSelectedDates} GetHotelRooms={GetHotelRooms} setSelectedHotelRoom={setSelectedHotelRoom} />
                                     </div>
                                     <div className="flex justify-center">
                                         <Card className="md:w-3/4 w-auto flex justify-center">
@@ -170,7 +170,7 @@ function HotelPage(props) {
                                                             {hotelRooms.sort((a, b) => a.hotelroomcapacity > b.hotelroomcapacity ? 1 : -1)
                                                             .map((hotelRoom, index) => (
                                                             <Button key={index} className={selectedHotelRoom.hotelroomcapacity == hotelRoom.hotelroomcapacity ?
-                                                                "flex flex-row border-4 px-3 py-2 rounded-lg mx-1 border-cyan-500" : "flex flex-row border-2 px-3 py-2 rounded-lg mx-1"} 
+                                                                "flex flex-row border-4 px-3 py-2 rounded-lg mx-1 border-cyan-500" : "flex flex-row border-2 px-3 py-2 rounded-lg mx-1 hover:bg-cyan-600"} 
                                                                     onClick={() => setSelectedHotelRoom(hotelRoom)}>
                                                                 {hotelRoom.hotelroomcapacity}<div className="w-6">{<UserIcon className="w-6"/>}</div> 
                                                             </Button>
@@ -191,7 +191,7 @@ function HotelPage(props) {
                                 )}
                             </div>
                             <div>
-                                <Button className="px-3 py-2 border-2 rounded-lg" onClick={() => BookHotelRoom()}>Book Hotel Room</Button>
+                                <Button className="px-3 py-2 border-2 rounded-lg hover:bg-cyan-600" onClick={() => BookHotelRoom()}>Book Hotel Room</Button>
                             </div>
                         </>
                         )

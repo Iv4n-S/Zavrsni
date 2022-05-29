@@ -10,6 +10,7 @@ import UserPage from "./Pages/UserPage";
 import Hotels from "./Pages/Hotels";
 import HotelPage from "./Pages/HotelPage";
 import Transport from "./Pages/Transport";
+import UsersBookings from "./Pages/UsersBookings";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -56,6 +57,9 @@ function App() {
                     </Routes>
                     <Routes>
                         <Route path="/user" element={isLoggedIn  ? <UserPage /> : <Navigate to="/" replace />} />
+                    </Routes>
+                    <Routes>
+                        <Route path="/usersBookings" element={isLoggedIn  ? <UsersBookings /> : <Navigate to="/" replace />} />
                     </Routes>
                     <Routes>
                         <Route path="/transport" element={<Transport />} />

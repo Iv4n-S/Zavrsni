@@ -117,7 +117,7 @@ function HotelSearchForm(props) {
     }
 
     return (
-        <div className="flex justify-center">
+        <div className="flex justify-center z-40">
             <Card className="md:w-1/3 w-auto">
                 <div className="flex justify-center w-full">
                     <p className="text-lg pb-4 text-slate-500">Search hotels</p>

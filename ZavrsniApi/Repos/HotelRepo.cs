@@ -147,11 +147,14 @@ namespace ZavrsniApi.Repos
             bool exists = _context.Occupieditem.Where(o => o.Idbookingitem == bookingHotel.IdHotelRoom && timeSlots.Contains(o.Idtimeslot)).Any();
             if (!exists)
             {
+                var bookingId = GetLastBookingId() + 1;
+                var occupiedItemId = GetLastOccupiedItemId() + 1;
+
                 Booking booking = new Booking();
                 foreach (var timeSlot in timeSlots)
                 {
                     booking = new Booking();
-                    booking.Idbooking = GetLastBookingId() + 1;
+                    booking.Idbooking = bookingId++;
                     booking.Idbookingitem = bookingHotel.IdHotelRoom;
                     booking.Timecreated = DateTime.Now;
                     booking.Idbookingtype = 2;
@@ -159,7 +162,7 @@ namespace ZavrsniApi.Repos
                     booking.Idtimeslot = timeSlot;
                     booking.Idhotel = bookingHotel.IdHotel;
                     _context.Booking.Add(booking);
-                    OccupieHotel(new OccupieItemDto { IdBookingItem = bookingHotel.IdHotelRoom, IdBooking = booking.Idbooking, IdTimeSlot = timeSlot });
+                    OccupieHotel(new OccupieItemDto { OccupiedItemId=occupiedItemId++, IdBookingItem = bookingHotel.IdHotelRoom, IdBooking = booking.Idbooking, IdTimeSlot = timeSlot });
                 }
                 return true;
             }
@@ -173,10 +176,9 @@ namespace ZavrsniApi.Repos
 
         public void OccupieHotel(OccupieItemDto booking)
         {
-            var occupiedItemId = GetLastOccupiedItemId() + 1;
             _context.Occupieditem.Add(new Occupieditem
             {
-                Idoccupieditem = occupiedItemId,
+                Idoccupieditem = booking.OccupiedItemId,
                 Idbookingitem = booking.IdBookingItem,
                 Idbooking = booking.IdBooking,
                 Idtimeslot = booking.IdTimeSlot,

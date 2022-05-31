@@ -150,17 +150,18 @@ namespace ZavrsniApi.Controllers
         [HttpPost]
         [Route("getAdminHotels")]
         [Authorize(Roles = "admin")]
-        public ActionResult<IEnumerable<HotelDto>> GetAdminHotels(GetAdminHotelsDto location)
+        public ActionResult<IEnumerable<AdminHotelDto>> GetAdminHotels(GetAdminHotelsDto location)
         {
             var result = _repository.GetAdminHotels(location.Location);
             if(result != null)
             {
-                var hotelRooms = _mapper.Map<IEnumerable<HotelDto>>(result);
+                var hotelRooms = _mapper.Map<IEnumerable<AdminHotelDto>>(result);
                 foreach (var hotelRoom in hotelRooms)
                 {
                     var image = (OkObjectResult)GetImages(hotelRoom.Idhotelroom).Result;
                     hotelRoom.image = (IEnumerable<ReturnImage>)image.Value;
                     hotelRoom.Location = _repository.GetLocation(hotelRoom.IdLocation);
+                    hotelRoom.Active = true;
                 }
 
                 return Ok(hotelRooms);
@@ -200,6 +201,20 @@ namespace ZavrsniApi.Controllers
 
 
             return Ok();
+        }
+
+        [HttpDelete]
+        [Route("deleteHotelRoom/{idHotelRoom}")]
+        [Authorize(Roles = "admin")]
+        public ActionResult DeleteHotelRoom(int idHotelRoom)
+        {
+            var result = _repository.DeleteHotelRoom(idHotelRoom);
+            if (result)
+            {
+                _repository.SaveChanges();
+                return Ok();
+            }
+            return Forbid();
         }
     }
 }

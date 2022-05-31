@@ -115,10 +115,23 @@ namespace ZavrsniApi.Repos
             var mappedTransports = _mapper.Map<IEnumerable<AdminTransportsDto>>(transports);
             foreach(var transport in mappedTransports)
             {
+                transport.LocationFrom = locations.LocationFrom;
+                transport.LocationTo = locations.LocationTo;
                 transport.Active = true;
             }
 
             return mappedTransports;
+        }
+
+        public bool DeleteTransport(int idTransport)
+        {
+            var transport = _context.Transport.Where(t => t.Idtransport == idTransport).FirstOrDefault();
+            if(transport != null)
+            {
+                _context.Transport.Remove(transport);
+                return true;
+            }
+            return false;
         }
     }
 }

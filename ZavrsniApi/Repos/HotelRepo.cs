@@ -205,7 +205,24 @@ namespace ZavrsniApi.Repos
         public IEnumerable<Hotel> GetAdminHotels(string location)
         {
             int idLocation = _context.Location.Where(l => l.Locationname.Equals(location)).FirstOrDefault().Idlocation;
+
             return _context.Hotel.Where(h => h.Idlocation == idLocation).ToList();
+        }
+
+        public bool DeleteHotelRoom(int idHotelRoom)
+        {
+            var hotelRoom = _context.Hotel.Where(h => h.Idhotelroom == idHotelRoom).FirstOrDefault();
+            if(hotelRoom != null)
+            {
+                var images = _context.Hotelroomimages.Where(i => i.Idhotelroom == idHotelRoom).ToList();
+                foreach(var image in images)
+                {
+                    _context.Hotelroomimages.Remove(image);
+                }
+                _context.Hotel.Remove(hotelRoom);
+                return true;
+            }
+            return false;
         }
     }
 }

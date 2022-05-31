@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import CarIcon from "../Components/CarIcon";
 import { OfficeBuildingIcon, PlusCircleIcon, MinusCircleIcon} from "@heroicons/react/solid";
 import Button from "../Components/Button";
@@ -6,6 +7,8 @@ import Card from "../Components/Card";
 import AdminHotelSearch from "../Components/AdminHotelSearch";
 import AdminTransportSearch from "../Components/AdminTransportSearch";
 import UsersTransports from "../Components/UsersTransports";
+import { NETWORK_CONFIG, API_CONFIG } from "../AppData/Constants";
+import UsersHotels from "../Components/UsersHotels";
 
 function Admin(props) {
     const [transportOption, setTransportOption] = React.useState(false);
@@ -14,8 +17,68 @@ function Admin(props) {
     const [addHotelOption, setAddHotelOption] = React.useState(false);
     const [removeTransportOption, setRemoveTransportOption] = React.useState(false);
     const [removeHotelOption, setRemoveHotelOption] = React.useState(false);
-    const [filteredHotels, setFilteredHotels] = React.useState([]);
+    const [filteredHotels, setFilteredHotels] = React.useState(undefined);
     const [filteredTransports, setFilteredTransports] = React.useState(undefined);
+
+    let navigate = useNavigate();
+
+    function DeleteTransport(idTransport) {
+        var confirmation = window.confirm(
+            "Are you sure you want to delete transport?"
+        );
+      
+            if (confirmation) {
+                const options = {
+                    method: "DELETE",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
+                    },
+                };
+                fetch(NETWORK_CONFIG.apiFullHost + API_CONFIG.deleteTransport + idTransport, options)
+                    .then((response) => {
+                        if(!response.ok) {
+                            alert("Deleting Transport failed!");
+                        }
+                        else {
+                            navigate("/admin");
+                        }
+                    })
+                .catch(() => {
+                    alert("Deleting Transport failed!");
+                    }
+                );
+            }
+    }
+
+    function DeleteHotel(idHotel) {
+        var confirmation = window.confirm(
+            "Are you sure you want to delete hotel?"
+        );
+      
+            if (confirmation) {
+                const options = {
+                    method: "DELETE",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${JSON.parse(localStorage.getItem('token'))}`,
+                    },
+                };
+                fetch(NETWORK_CONFIG.apiFullHost + API_CONFIG.deleteHotel + idHotel, options)
+                    .then((response) => {
+                        if(!response.ok) {
+                            alert("Deleting Hotel failed!");
+                        }
+                        else {
+                            navigate("/admin");
+                        }
+                    })
+                .catch(() => {
+                    alert("Deleting Hotel failed!");
+                    }
+                );
+            }
+    }
 
 
     return (
@@ -86,11 +149,14 @@ function Admin(props) {
                                                                 <div className="flex justify-center w-full">
                                                                     <UsersTransports transport={value}/>
                                                                 </div>
-                                                                {value.active ? (
-                                                                    <div className="flex justify-center mt-1">
-                                                                        <Button label="Delete transport" className="bg-[#F45B69]" />
-                                                                    </div>
-                                                                ) : (<></>)}
+                                                                <div className="flex justify-center mt-1">
+                                                                    <Button label="Delete Transport" className="bg-[#F45B69]" 
+                                                                        onClick={() =>  {
+                                                                            DeleteTransport(value.idtransport);
+                                                                            filteredTransport.transports.splice(filteredTransport.transports.indexOf(value), 1);
+                                                                        }
+                                                                    }/>
+                                                                </div>
                                                             </Card>
                                                         </div>
                                                         ))}
@@ -139,8 +205,33 @@ function Admin(props) {
                                 </div>
                             }
                             {removeHotelOption &&
-                                <div className="flex justify-center w-full">
-                                    <AdminHotelSearch setFilteredHotels={setFilteredHotels} />
+                                <div className="flex flex-col">
+                                    <div className="flex justify-center w-full">
+                                        <AdminHotelSearch setFilteredHotels={setFilteredHotels} />
+                                    </div>
+                                    {filteredHotels != undefined && (
+                                            filteredHotels.length != 0 &&
+                                            <>
+                                                {filteredHotels.map((filteredHotel, index) => (
+                                                    <div key={index}>
+                                                        <Card className="flex flex-col justify-center">
+                                                            <div className="flex justify-center w-full">
+                                                                <UsersHotels hotel={filteredHotel}/>
+                                                            </div>
+                                                            <div className="flex justify-center mt-1">
+                                                                <Button label="Delete Hotel" className="bg-[#F45B69]" 
+                                                                    onClick={() =>  {
+                                                                        DeleteHotel(filteredHotel.idhotelroom);
+                                                                        filteredHotels.splice(filteredHotels.indexOf(filteredHotel), 1);
+                                                                    }
+                                                                }/>
+                                                            </div>
+                                                        </Card>
+                                                    </div>
+                                                ))}
+                                            </>
+                                        )
+                                    }
                                 </div>
                             }
                         </div>

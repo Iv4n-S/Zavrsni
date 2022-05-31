@@ -39,7 +39,15 @@ function UsersHotels(props) {
                             <div>{hotel.location}</div>
                         </div>
                         <div>
-                            <span className="text-lg">Booked date: </span>{hotel.timeSlot}
+                            {hotel.timeSlot == undefined ? (
+                                <>                            
+                                    <span className="text-lg">Room capacity: </span><span className="text-lg">{hotel.hotelroomcapacity}</span>
+                                </>
+                            ) : (
+                                <>
+                                    <span className="text-lg">Booked date: </span>{hotel.timeSlot}
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>

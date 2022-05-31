@@ -132,5 +132,19 @@ namespace ZavrsniApi.Controllers
             }
             return NotFound();
         }
+
+        [HttpDelete]
+        [Route("deleteTransport/{idTransport}")]
+        [Authorize(Roles = "admin")]
+        public ActionResult DeleteTransport(int idTransport)
+        {
+            var result = _repository.DeleteTransport(idTransport);
+            if (result)
+            {
+                _repository.SaveChanges();
+                return Ok();
+            }
+            return Forbid();
+        }
     }
 }

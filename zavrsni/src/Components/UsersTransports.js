@@ -19,8 +19,13 @@ function UsersTransports(props) {
                     <span className="font-semibold text-slate-500 mx-2">To: </span>{transport.locationTo}
                 </div>
                 <div className="flex justify-center">
-                    <span className="font-semibold text-slate-500 mx-2">Booked Date: </span>{transport.timeSlot}
+                    <span className="font-semibold text-slate-500 mx-2">Departure Time: </span>{transport.departureTime}
                 </div>
+                {transport.timeSlot != null && 
+                    <div className="flex justify-center">
+                        <span className="font-semibold text-slate-500 mx-2">Booked Date: </span>{transport.timeSlot}
+                    </div>
+                }
             </div>
         </Card>                    
     );

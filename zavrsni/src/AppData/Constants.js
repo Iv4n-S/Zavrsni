@@ -21,6 +21,8 @@ const API_CONFIG = {
     cancelBooking: "/api/bookings/cancelBooking/",
     searchAdminHotels: "/api/hotel/getAdminHotels/",
     searchAdminTransports: "/api/transport/getAdminTransports/",
+    deleteTransport: "/api/transport/deleteTransport/",
+    deleteHotel: "/api/hotel/deleteHotelRoom/"
 
   };
   

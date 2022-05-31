@@ -112,21 +112,31 @@ function UsersBookings(props) {
                     {userTransportsDisplay && (
                         <div className="flex justify-center">
                             <Card className="md:w-2/3 w-auto">
-                                {transportBookings.sort((a, b) => a.active < b.active ? 1 : -1)
-                                .map((value, index) => (
-                                    <div key={index}>
-                                        <Card className="flex flex-col justify-center">
-                                            <div className="flex justify-center w-full">
-                                                <UsersTransports transport={value}/>
-                                            </div>
-                                            {value.active ? (
-                                                <div className="flex justify-center mt-1">
-                                                    <Button label="Cancel Booking" className="bg-[#F45B69]" onClick={() => CancelBooking(value.idbooking)} />
-                                                </div>
-                                            ) : (<></>)}
-                                        </Card>
+                            {transportBookings.length == 0 ? (
+                                <div className="flex justify-center">
+                                    <div className="border-red-100 rounded p-2 text-red-700 mb-2 bg-red-100 md:w-3/4 w-auto">
+                                        "You don't have any transports booked!"
                                     </div>
-                                ))}
+                                </div>
+                            ) : (
+                                <>
+                                    {transportBookings.sort((a, b) => a.active < b.active ? 1 : -1)
+                                    .map((value, index) => (
+                                        <div key={index}>
+                                            <Card className="flex flex-col justify-center">
+                                                <div className="flex justify-center w-full">
+                                                    <UsersTransports transport={value}/>
+                                                </div>
+                                                {value.active ? (
+                                                    <div className="flex justify-center mt-1">
+                                                        <Button label="Cancel Booking" className="bg-[#F45B69]" onClick={() => CancelBooking(value.idbooking)} />
+                                                    </div>
+                                                ) : (<></>)}
+                                            </Card>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
                             </Card>
                         </div>      
                     )} 
@@ -142,21 +152,31 @@ function UsersBookings(props) {
                     {userHotelsDisplay && (
                         <div className="flex justify-center">
                             <Card className="md:w-2/3 w-auto">
-                            {hotelBookings.sort((a, b) => a.active < b.active ? 1 : -1)
-                            .map((value, index) => (
-                                <div key={index}>
-                                    <Card className="flex flex-col justify-center">
-                                        <div className="flex justify-center">
-                                            <UsersHotels hotel={value}/>
-                                        </div>
-                                        {value.active ? (
-                                            <div className="flex justify-center mt-1">
-                                                <Button label="Cancel Booking" className="bg-[#F45B69]" onClick={() => CancelBooking(value.idbooking)} />
-                                            </div>
-                                        ) : (<></>)}
-                                    </Card>
+                            {hotelBookings.length == 0 ? (
+                                <div className="flex justify-center">
+                                    <div className="border-red-100 rounded p-2 text-red-700 mb-2 bg-red-100 md:w-3/4 w-auto">
+                                        "You don't have any hotels booked!"
+                                    </div>
                                 </div>
-                            ))}
+                            ) : (
+                                <>
+                                    {hotelBookings.sort((a, b) => a.active < b.active ? 1 : -1)
+                                    .map((value, index) => (
+                                        <div key={index}>
+                                            <Card className="flex flex-col justify-center">
+                                                <div className="flex justify-center">
+                                                    <UsersHotels hotel={value}/>
+                                                </div>
+                                                {value.active ? (
+                                                    <div className="flex justify-center mt-1">
+                                                        <Button label="Cancel Booking" className="bg-[#F45B69]" onClick={() => CancelBooking(value.idbooking)} />
+                                                    </div>
+                                                ) : (<></>)}
+                                            </Card>
+                                        </div>
+                                    ))}
+                                </>
+                            )}
                             </Card>
                         </div>
                     )}

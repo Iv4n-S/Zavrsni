@@ -201,5 +201,11 @@ namespace ZavrsniApi.Repos
         {
             return _context.Hotel.Where(h => h.Idhotelroom == idhotelroom).FirstOrDefault().Hotelname;
         }
+
+        public IEnumerable<Hotel> GetAdminHotels(string location)
+        {
+            int idLocation = _context.Location.Where(l => l.Locationname.Equals(location)).FirstOrDefault().Idlocation;
+            return _context.Hotel.Where(h => h.Idlocation == idLocation).ToList();
+        }
     }
 }

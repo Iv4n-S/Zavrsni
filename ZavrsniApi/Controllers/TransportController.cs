@@ -102,5 +102,35 @@ namespace ZavrsniApi.Controllers
 
             return Ok();
         }
+
+        [HttpPost]
+        [Route("getAdminTransports")]
+        [Authorize(Roles = "admin")]
+        public ActionResult<IEnumerable<AdminTransportsDividedDto>> GetAdminHotels(GetAdminTransportsDto locations)
+        {
+            var result = _repository.GetAdminTransports(locations);
+            if (result != null)
+            {
+                IEnumerable<AdminTransportsDividedDto> transportsDivided = new AdminTransportsDividedDto[] { };
+                IEnumerable<TransportTypesDto> transportTypes = _repository.GetTransportTypes();
+                foreach (var type in transportTypes)
+                {
+                    IEnumerable<AdminTransportsDto> transportOfType = new AdminTransportsDto[] { };
+                    foreach (var transport in result)
+                    {
+                        if (transport.Idtransporttype == type.Idtransporttype)
+                        {
+                            transportOfType = transportOfType.Append(transport);
+                        }
+                    }
+                    if (transportOfType.Count() != 0)
+                    {
+                        transportsDivided = transportsDivided.Append(new AdminTransportsDividedDto { TransportType = type.TransportTypeName, Transports = transportOfType });
+                    }
+                }
+                return Ok(transportsDivided);
+            }
+            return NotFound();
+        }
     }
 }

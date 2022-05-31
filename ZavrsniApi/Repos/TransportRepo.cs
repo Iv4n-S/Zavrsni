@@ -105,5 +105,20 @@ namespace ZavrsniApi.Repos
         {
             return _context.Transport.Where(t => t.Idtransport == idtransport).FirstOrDefault().Transportname;
         }
+
+        public IEnumerable<AdminTransportsDto> GetAdminTransports(GetAdminTransportsDto locations)
+        {
+            var locationFromId = _context.Location.Where(l => l.Locationname.Equals(locations.LocationFrom)).Select(l => l.Idlocation).FirstOrDefault();
+            var locationToId = _context.Location.Where(l => l.Locationname.Equals(locations.LocationTo)).Select(l => l.Idlocation).FirstOrDefault();
+            var transports = _context.Transport.Where(t => t.Idlocationfrom == locationFromId && t.Idlocationto == locationToId).ToList();
+
+            var mappedTransports = _mapper.Map<IEnumerable<AdminTransportsDto>>(transports);
+            foreach(var transport in mappedTransports)
+            {
+                transport.Active = true;
+            }
+
+            return mappedTransports;
+        }
     }
 }

@@ -148,6 +148,27 @@ namespace ZavrsniApi.Controllers
         }
 
         [HttpPost]
+        [Route("getAdminHotels")]
+        [Authorize(Roles = "admin")]
+        public ActionResult<IEnumerable<HotelDto>> GetAdminHotels(GetAdminHotelsDto location)
+        {
+            var result = _repository.GetAdminHotels(location.Location);
+            if(result != null)
+            {
+                var hotelRooms = _mapper.Map<IEnumerable<HotelDto>>(result);
+                foreach (var hotelRoom in hotelRooms)
+                {
+                    var image = (OkObjectResult)GetImages(hotelRoom.Idhotelroom).Result;
+                    hotelRoom.image = (IEnumerable<ReturnImage>)image.Value;
+                    hotelRoom.Location = _repository.GetLocation(hotelRoom.IdLocation);
+                }
+
+                return Ok(hotelRooms);
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
         [Route("bookHotelRoom")]
         [Authorize]
         public async Task<ActionResult> BookHotelRoom(BookingHotelDto hotelRoom)

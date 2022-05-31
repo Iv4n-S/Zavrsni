@@ -37,7 +37,7 @@ function PostImage(props) {
                 },
             };
 
-            fetch(NETWORK_CONFIG.apiFullHost + API_CONFIG.postImage + 7, imageOptions)
+            fetch(NETWORK_CONFIG.apiFullHost + API_CONFIG.postImage + 150027, imageOptions)
             .then((response) => {
                 if (!response.ok) {
                     setError("Adding images failed");

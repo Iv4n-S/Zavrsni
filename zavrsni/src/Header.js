@@ -7,7 +7,6 @@ import {
     LogoutIcon,
     UserIcon,
     OfficeBuildingIcon,
-    MapIcon
 } from "@heroicons/react/solid";
 import cx from "classnames";
 import CarIcon from "./Components/CarIcon.js";
@@ -71,6 +70,14 @@ function Header(props) {
                                 >
                                     <span>User's Bookings</span>
                                 </div>
+                                {JSON.parse(localStorage.getItem('user')).role == "admin" ? (
+                                    <div
+                                    onClick={() => navigate("/admin")}
+                                    className="flex flex-col items-start w-full border-1 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
+                                >
+                                    <span>Admin</span>
+                                </div>
+                                ) : (<></>)}
                                 <div
                                     onClick={props.logOut}
                                     className="flex flex-col items-start w-full border-1 border-t-2 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"

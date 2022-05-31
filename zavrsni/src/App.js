@@ -11,6 +11,7 @@ import Hotels from "./Pages/Hotels";
 import HotelPage from "./Pages/HotelPage";
 import Transport from "./Pages/Transport";
 import UsersBookings from "./Pages/UsersBookings";
+import Admin from "./Pages/Admin";
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
@@ -69,6 +70,10 @@ function App() {
                     </Routes>
                     <Routes>
                         <Route path="/hotelpage" element={<HotelPage />} />
+                    </Routes>
+                    <Routes>
+                        <Route path="/admin" element={isLoggedIn  ? (JSON.parse(localStorage.getItem('user')).role == "admin" ? <Admin /> 
+                        : <Navigate to="/" replace />) : <Navigate to="/" replace />} />
                     </Routes>
                 </div>
             </BrowserRouter>

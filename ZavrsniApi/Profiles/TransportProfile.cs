@@ -16,6 +16,7 @@ namespace ZavrsniApi.Profiles
             CreateMap<Transporttypes, TransportTypesDto>();
             CreateMap<Transport, TransportsDto>();
             CreateMap<BookingTransportDto, BookTransportDto>();
+            CreateMap<Transport, AdminTransportsDto>();
         }
 
     }

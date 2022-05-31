@@ -72,7 +72,14 @@ function HotelPage(props) {
     };
 
     function BookHotelRoom() {
-        if(selectedHotelRoom.hotelroomcapacity == 0) {
+        if(localStorage.getItem('token') == null) {
+            localStorage.setItem('historyPage', JSON.stringify("hotelpage"));
+            localStorage.setItem('historyCapacity', JSON.stringify(hotel));
+            localStorage.setItem('historyDates', JSON.stringify(selectedDates));
+            alert("Log in to book hotel room");
+            navigate("/login");
+        }
+        else if(selectedHotelRoom.hotelroomcapacity == 0) {
             setError("Selecting room capacity is required!")
         }
         else {
@@ -99,6 +106,9 @@ function HotelPage(props) {
                     }
                     else {
                         alert("Booking successful");
+                        localStorage.removeItem('historyPage');
+                        localStorage.removeItem('historyCapacity');
+                        localStorage.removeItem('historyDates');
                         setError("");
                         navigate("/");
                     }})
@@ -141,12 +151,12 @@ function HotelPage(props) {
                             </Card>
                         </div>
                         {selectedDates == null ? (                                    
-                            <HotelDateSelectionForm setSelectedDates={setSelectedDates} GetHotelRooms={GetHotelRooms} />
+                            <HotelDateSelectionForm setSelectedDates={setSelectedDates} GetHotelRooms={GetHotelRooms} setSelectedHotelRoom={setSelectedHotelRoom}/>
                         ) : (
                             <>
                         {hotelRooms == undefined ? (
                                 <>
-                                    <HotelDateSelectionForm setSelectedDates={setSelectedDates} GetHotelRooms={GetHotelRooms} />
+                                    <HotelDateSelectionForm setSelectedDates={setSelectedDates} GetHotelRooms={GetHotelRooms} setSelectedHotelRoom={setSelectedHotelRoom}/>
                                 </>) : (
                                 <>
                                     <div className="z-40">

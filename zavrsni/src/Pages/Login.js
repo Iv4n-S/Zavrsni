@@ -13,6 +13,12 @@ function Login(props) {
     const [error, setError] = React.useState("");
     let navigate = useNavigate();
 
+    React.useEffect(() => {
+        console.log(localStorage.getItem('historyPage'));
+        console.log(JSON.parse(localStorage.getItem('historyCapacity')));
+        console.log(JSON.parse(localStorage.getItem('historyDates')));
+    })
+
     function onChange(event) {
         const { name, value } = event.target;
         setLoginForm((oldForm) => ({ ...oldForm, [name]: value }));
@@ -48,7 +54,17 @@ function Login(props) {
                     localStorage.removeItem('user');
                     localStorage.removeItem('expires');
                 }, Date.parse(value.expires) - Date.now());
-                navigate("/");
+                if(localStorage.getItem('historyPage') != null) {
+                    if(JSON.parse(localStorage.getItem('historyPage')) == 'hotelpage') {
+                        navigate("/hotelpage", {state : { hotel: JSON.parse(localStorage.getItem('historyCapacity')), selectedDates: JSON.parse(localStorage.getItem('historyDates')) }});
+                    }
+                    else if(JSON.parse(localStorage.getItem('historyPage')) == 'transport') {
+                        navigate("/transport", {state : { filteredTransports: JSON.parse(localStorage.getItem('historyCapacity')), selectedDate: JSON.parse(localStorage.getItem('historyDates')) }});
+                    }
+                }
+                else {
+                    navigate("/");
+                }
             }).catch((error) => setError("Wrong username or password!"));
         }
         })

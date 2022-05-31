@@ -12,10 +12,27 @@ function Transport(props) {
     const [selectedDate, setSelectedDate] = React.useState();
     const [selectedTransport, setSelectedTransport] = React.useState(null);
     const [error, setError] = React.useState("");
+    let location = useLocation();
 
+    React.useEffect(() => {
+        if(location.state != undefined) {
+            setFilteredTransports(location.state.filteredTransports);
+            setSelectedDate(location.state.selectedDate);
+            localStorage.removeItem('historyPage');
+            localStorage.removeItem('historyCapacity');
+            localStorage.removeItem('historyDates');
+        }
+    });
 
     function BookTransport() {
-        if(selectedTransport == null) {
+        if(localStorage.getItem('token') == null) {
+            localStorage.setItem('historyPage', JSON.stringify("transport"));
+            localStorage.setItem('historyCapacity', JSON.stringify(filteredTransports));
+            localStorage.setItem('historyDates', JSON.stringify(selectedDate));
+            alert("Log in to book transport");
+            navigate("/login");
+        }
+        else if(selectedTransport == null) {
             setError("Selecting departure time is required!")
         }
         else {

@@ -35,10 +35,10 @@ namespace ZavrsniApi.Repos
                 }
                 bookingsPerHotel[idHotel.Value] = value;
             }
-            IEnumerable<Hotel> hotels = _context.Hotel.AsEnumerable().Where(h => bookingsPerHotel.ContainsKey(h.IdHotel))
-                .OrderByDescending(h => bookingsPerHotel[h.IdHotel]).Take(10);
+            IEnumerable<Hotel> hotels = _context.Hotel.AsEnumerable().Where(h => bookingsPerHotel.ContainsKey(h.IdHotel)).GroupBy(h => h.IdHotel)
+                .Select(h => h.First()).OrderByDescending(h => bookingsPerHotel[h.IdHotel]).Take(10);
             IEnumerable<Hotel> hotelsDistinct = new Hotel[] { };
-            foreach(var hotel in hotels)
+            foreach (var hotel in hotels)
             {
                 if (!hotelsDistinct.Where(h => h.IdHotel == hotel.IdHotel).Any())
                 {

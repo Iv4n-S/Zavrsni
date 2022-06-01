@@ -17,11 +17,11 @@ function HotelInScrollList({
     <div className="flex w-full">
         <div className={componentClassName} onClick={() => navigate("/hotelpage", {state : { hotel: hotel, selectedDates: null }}) }>
             <img className="h-48 w-48" src={hotel.image[0].original} />
-            <div className="h-28">
-                <div className="py-2">
+            <div className="flex flex-col justify-between w-full h-20">
+                <div className="pt-2">
                     {hotel.hotelname}
                 </div>
-                <div className="flex h-16 items-center justify-center">
+                <div className="flex justify-center w-full">
                     <div className="w-6">{<LocationMarkerIcon className="w-6"/>}</div> 
                     <div>{hotel.location}</div>
                 </div>  

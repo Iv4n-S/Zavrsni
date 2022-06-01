@@ -22,6 +22,7 @@ function Home() {
                 response.json()
                 .then((value) => {
                     setTopTenHotels(value);
+                    console.log(value);
                 })
             }
 

@@ -149,13 +149,11 @@ function AddHotelForm(props) {
                                     );
 
                                 } else {
+                                    alert("Hotel added successfully");
                                     setHotelName("");
                                     setHotelRoomCapacity("");
                                     setHotelRoomDesc("");
-                                    setStars(0);
                                     setHotelLocation("");
-                                    setImages([]);
-                                    setStars(undefined);
                                 }
                             })
                             .catch((error) => {

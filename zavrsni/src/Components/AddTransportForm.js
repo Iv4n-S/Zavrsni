@@ -183,6 +183,7 @@ function AddTransportForm(props) {
                         setError("Adding transport failed!");
                     }
                     else {
+                        alert("Transport added successfully");
                         setTransportName("");
                         setTransportType("");
                         setTransportTypeValue("");

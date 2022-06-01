@@ -59,20 +59,29 @@ function Header(props) {
                         {userMenuDisplay && (
                             <div className="flex flex-col items-center absolute w-full bg-cyan-500 rounded">
                                 <div
-                                    onClick={() => navigate("/user")}
+                                    onClick={() => {
+                                        setUserMenuDisplay(false);
+                                        navigate("/user");
+                                    }}
                                     className="flex flex-col items-start w-full border-1 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
                                 >
                                     <span>User Profile</span>
                                 </div>
                                 <div
-                                    onClick={() => navigate("/usersBookings")}
+                                    onClick={() => {
+                                        setUserMenuDisplay(false);
+                                        navigate("/usersBookings")
+                                    }}
                                     className="flex flex-col items-start w-full border-1 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
                                 >
                                     <span>User's Bookings</span>
                                 </div>
                                 {JSON.parse(localStorage.getItem('user')).role == "admin" ? (
                                     <div
-                                    onClick={() => navigate("/admin")}
+                                    onClick={() => {
+                                        setUserMenuDisplay(false);
+                                        navigate("/admin")
+                                    }}
                                     className="flex flex-col items-start w-full border-1 rounded-sm p-2 pl-4 py-4 hover:bg-cyan-600"
                                 >
                                     <span>Admin</span>
@@ -102,9 +111,6 @@ function Header(props) {
                     </Link>
                     <Link to="/hotels">
                         <Button label="HOTELS" icon={<OfficeBuildingIcon />} className="space-x-2" />
-                    </Link>
-                    <Link to="/postImage">
-                        <Button label="Post Image" className="space-x-2" />
                     </Link>
                 </div>
                 <div className="flex flex-row space-x-4 pr-10">

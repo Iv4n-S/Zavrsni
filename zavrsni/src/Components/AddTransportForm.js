@@ -4,8 +4,6 @@ import Input from "./Input";
 import Button from "./Button";
 import { NETWORK_CONFIG, API_CONFIG } from "../AppData/Constants";
 import { useLocation, useNavigate } from "react-router";
-import { LocationMarkerIcon } from "@heroicons/react/solid";
-import CarIcon from "./CarIcon";
 import DatePicker from 'react-datepicker';
 import dateFormat from "dateformat";
 
@@ -146,7 +144,7 @@ function AddTransportForm(props) {
             setError("Transport type is required!");
         }
         else if (departureTime == "") {
-
+            setError("Departure Time is required!");
         }
         else if (capacity == "") {
             setError("Capacity is required!");
@@ -184,7 +182,13 @@ function AddTransportForm(props) {
                         setError("Adding transport failed!");
                     }
                     else {
-
+                        setTransportName("");
+                        setTransportType("");
+                        setTransportTypeValue("");
+                        setLocationFrom("");
+                        setLocationTo("");
+                        setCapacity("");
+                        setDepartureTime("");
                     }})
                 .catch(() => {
                     setError("Adding transport failed!");
@@ -218,7 +222,6 @@ function AddTransportForm(props) {
                             name="location"
                             placeholder="Search location from"
                             value={locationFrom}
-                            icon={<LocationMarkerIcon />}
                             onChange={event => setLocationFrom(event.target.value)}
                             onClick={() => setDisplayFrom(!displayFrom)}
                             required
@@ -249,7 +252,6 @@ function AddTransportForm(props) {
                             name="location"
                             placeholder="Search location to"
                             value={locationTo}
-                            icon={<LocationMarkerIcon />}
                             onChange={event => setLocationTo(event.target.value)}
                             onClick={() => setDisplayTo(!displayTo)}
                             required
@@ -261,7 +263,6 @@ function AddTransportForm(props) {
                                 return (
                                     <div
                                         onClick={() =>  {
-                                            
                                             updateLocationsTo(value.locationname);
                                         }}
                                         className="flex flex-col items-start w-full border-2 rounded-sm p-2"
@@ -283,7 +284,6 @@ function AddTransportForm(props) {
                             name="transportType"
                             placeholder="Search transport type"
                             value={transportTypeValue}
-                            icon={<CarIcon className="pr-1" />}
                             onChange={event =>  {
                                 setTransportTypeValue(event.target.value);
                                 setTransportType(event.target.value);
@@ -334,10 +334,11 @@ function AddTransportForm(props) {
                     <div className="w-2/3">
                         <Input 
                             className="flex mt-2 w-full"
+                            type="number"
                             name="capacity"
                             placeholder="Insert Capacity"
                             value={capacity}
-                            onChange={event => setCapacity(event.target.value)}
+                            onChange={event => setCapacity((v) => event.target.value > 0 ? event.target.value : v)}
                             required
                         />
                     </div>
@@ -353,7 +354,7 @@ function AddTransportForm(props) {
                     <Button
                         type="button"
                         className="bg-gray-100 rounded text-gray-900 w-2/3 border-2 text-lg border-gray-400 hover:border-gray-600"
-                        label="Search"
+                        label="Add Transport"
                         onClick={onSubmit}
                     />
                 </div>

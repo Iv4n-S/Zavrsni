@@ -221,7 +221,7 @@ namespace ZavrsniApi.Controllers
         [HttpPost]
         [Route("addHotel")]
         [Authorize(Roles = "admin")]
-        public ActionResult AddHotel(AddHotelDto addHotel)
+        public ActionResult<int> AddHotel(AddHotelDto addHotel)
         {
             var result = _repository.AddHotelRoom(addHotel);
             if (result != -1)
@@ -229,8 +229,7 @@ namespace ZavrsniApi.Controllers
                 var saved = _repository.SaveChanges();
                 if (saved)
                 {
-                    var imageInserted = InsertImages(result, addHotel.images);
-                    return Ok();
+                    return Ok(result);
                 }
             }
             return Conflict();

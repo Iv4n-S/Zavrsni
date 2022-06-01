@@ -54,9 +54,6 @@ function App() {
                         <Route path="/register" element={<Register setLoggedIn={setIsLoggedIn} />} />
                     </Routes>
                     <Routes>
-                        <Route path="/postImage" element={<PostImage setLoggedIn={setIsLoggedIn} />} />
-                    </Routes>
-                    <Routes>
                         <Route path="/user" element={isLoggedIn  ? <UserPage /> : <Navigate to="/" replace />} />
                     </Routes>
                     <Routes>

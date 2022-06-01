@@ -235,7 +235,17 @@ namespace ZavrsniApi.Repos
                 int lastHotelId = _context.Hotel.OrderByDescending(h => h.Idhotelroom).First().Idhotelroom;
                 Hotel hotel = _mapper.Map<Hotel>(addHotel);
                 hotel.Idhotelroom = lastTransportId > lastHotelId ? lastTransportId + 1 : lastHotelId + 1;
-                hotel.Idlocation = _context.Location.Where(l => l.Locationname.Equals(addHotel.Location)).FirstOrDefault().Idlocation;
+                hotel.Idlocation = _context.Location.Where(l => l.Locationname.Equals(addHotel.Location)).Select(l => l.Idlocation).FirstOrDefault();
+                if (hotel.Idlocation == 0)
+                {
+                    Location location = new Location();
+                    location.Idlocation = _context.Location.OrderByDescending(l => l.Idlocation).First().Idlocation + 1;
+                    location.Locationname = addHotel.Location;
+                    _context.Location.Add(location);
+                    _context.SaveChanges();
+                    hotel.Idlocation = location.Idlocation;
+
+                }
                 var idHotel = _context.Hotel.Where(h => h.Hotelname.Equals(hotel.Hotelname) && h.Idlocation == hotel.Idlocation).Select(h => h.IdHotel).FirstOrDefault();
                 hotel.IdHotel = idHotel != 0 ? idHotel : _context.Hotel.OrderByDescending(h => h.IdHotel).First().IdHotel + 1;
                 _context.Hotel.Add(hotel);

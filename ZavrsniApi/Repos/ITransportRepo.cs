@@ -16,6 +16,7 @@ namespace ZavrsniApi.Repos
         bool BookTransport(BookTransportDto booking);
         IEnumerable<AdminTransportsDto> GetAdminTransports(GetAdminTransportsDto locations);
         bool DeleteTransport(int idTransport);
+        bool AddTransport(AddTransportDto addTransport);
 
     }
 }

@@ -22,7 +22,8 @@ const API_CONFIG = {
     searchAdminHotels: "/api/hotel/getAdminHotels/",
     searchAdminTransports: "/api/transport/getAdminTransports/",
     deleteTransport: "/api/transport/deleteTransport/",
-    deleteHotel: "/api/hotel/deleteHotelRoom/"
+    deleteHotel: "/api/hotel/deleteHotelRoom/",
+    addTransport:"/api/transport/addTransport"
 
   };
   

@@ -216,5 +216,24 @@ namespace ZavrsniApi.Controllers
             }
             return Forbid();
         }
+
+
+        [HttpPost]
+        [Route("addHotel")]
+        [Authorize(Roles = "admin")]
+        public ActionResult AddHotel(AddHotelDto addHotel)
+        {
+            var result = _repository.AddHotelRoom(addHotel);
+            if (result != -1)
+            {
+                var saved = _repository.SaveChanges();
+                if (saved)
+                {
+                    var imageInserted = InsertImages(result, addHotel.images);
+                    return Ok();
+                }
+            }
+            return Conflict();
+        }
     }
 }

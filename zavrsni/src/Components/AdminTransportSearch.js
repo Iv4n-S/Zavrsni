@@ -98,9 +98,12 @@ function AdminTransportSearch(props) {
         else {
             setError("");
 
+            var locationFromCapitalized = locationFromSearch[0].toUpperCase() + locationFromSearch.substring(1);
+            var locationToCapitalize = locationToSearch[0].toUpperCase() + locationToSearch.substring(1);
+
             const body = `{
-                "LocationFrom": "${locationFromSearch}",
-                "LocationTo": "${locationToSearch}",
+                "LocationFrom": "${locationFromCapitalized}",
+                "LocationTo": "${locationToCapitalize}",
             }`;
     
             const options = {
@@ -120,7 +123,7 @@ function AdminTransportSearch(props) {
                     else {
                         response.json().then((value) => {
                             if(value.length == 0) {
-                                setError(`No transports available from ${locationFromSearch} to ${locationToSearch} on selected date`)
+                                setError(`No transports available from ${locationFromSearch} to ${locationToSearch}`)
                             }
                             else {
                                 props.setFilteredTransports(value);

@@ -83,9 +83,12 @@ function HotelSearchForm(props) {
 
             props.setSelectedDates(selectedDatesList);
 
+            var locationCapitalized = locationSearch[0].toUpperCase() + locationSearch.substring(1);
+
+
             const body = `{
                 "SelectedDates": [${selectedDatesList}],
-                "Location": "${locationSearch}"
+                "Location": "${locationCapitalized}"
             }`;
     
             const options = {

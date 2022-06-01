@@ -146,5 +146,22 @@ namespace ZavrsniApi.Controllers
             }
             return Forbid();
         }
+
+        [HttpPost]
+        [Route("addTransport")]
+        [Authorize(Roles = "admin")]
+        public ActionResult AddTransport(AddTransportDto addTransport)
+        {
+            var result = _repository.AddTransport(addTransport);
+            if(result)
+            {
+                var saved = _repository.SaveChanges();
+                if(saved)
+                {
+                    return Ok();
+                }
+            }
+            return Conflict();
+        }
     }
 }

@@ -17,7 +17,6 @@ export default function Input({
     }) {
     const InputStyle = cx({
         "flex flex-row border-2 rounded-sm mb-2 filter drop-shadow-md": true,
-        "px-2 py-2": !icon,
         "border-gray-400 hover:border-gray-600": !disabled,
         "border-gray-200": disabled,
         [className]: className,
@@ -49,7 +48,7 @@ export default function Input({
         ) : (
             <div className={InputStyle}>
                 <input
-                    className="p-2 w-full border-l-2"
+                    className="p-2 w-full"
                     name={name}
                     type={type}
                     placeholder={placeholder}

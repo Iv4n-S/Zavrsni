@@ -69,8 +69,10 @@ function AdminHotelSearch(props) {
         else {
             setError("");
 
+            var locationCapitalized = locationSearch[0].toUpperCase() + locationSearch.substring(1);
+
             const body = `{
-                "Location": "${locationSearch}"
+                "Location": "${locationCapitalized}"
             }`;
     
             const options = {

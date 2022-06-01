@@ -12,10 +12,12 @@ namespace ZavrsniApi.Repos
     public class HotelRepo : IHotelRepo
     {
         private readonly ZavrsniContext _context;
+        private readonly IMapper _mapper;
 
         public HotelRepo(ZavrsniContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
 
@@ -223,6 +225,23 @@ namespace ZavrsniApi.Repos
                 return true;
             }
             return false;
+        }
+
+        public int AddHotelRoom(AddHotelDto addHotel)
+        {
+            if (addHotel != null)
+            {
+                int lastTransportId = _context.Transport.OrderByDescending(t => t.Idtransport).First().Idtransport;
+                int lastHotelId = _context.Hotel.OrderByDescending(h => h.Idhotelroom).First().Idhotelroom;
+                Hotel hotel = _mapper.Map<Hotel>(addHotel);
+                hotel.Idhotelroom = lastTransportId > lastHotelId ? lastTransportId + 1 : lastHotelId + 1;
+                hotel.Idlocation = _context.Location.Where(l => l.Locationname.Equals(addHotel.Location)).FirstOrDefault().Idlocation;
+                var idHotel = _context.Hotel.Where(h => h.Hotelname.Equals(hotel.Hotelname) && h.Idlocation == hotel.Idlocation).Select(h => h.IdHotel).FirstOrDefault();
+                hotel.IdHotel = idHotel != 0 ? idHotel : _context.Hotel.OrderByDescending(h => h.IdHotel).First().IdHotel + 1;
+                _context.Hotel.Add(hotel);
+                return hotel.Idhotelroom;
+            }
+            return -1;
         }
     }
 }

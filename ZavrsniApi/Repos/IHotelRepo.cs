@@ -21,5 +21,6 @@ namespace ZavrsniApi.Repos
         bool BookHotelRoom(BookHotelDto booking);
         IEnumerable<Hotel> GetAdminHotels(string location);
         bool DeleteHotelRoom(int idHotelRoom);
+        int AddHotelRoom(AddHotelDto addHotel);
     }
 }

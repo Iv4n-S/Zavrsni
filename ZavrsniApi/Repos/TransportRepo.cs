@@ -133,5 +133,39 @@ namespace ZavrsniApi.Repos
             }
             return false;
         }
+
+        public bool AddTransport(AddTransportDto addTransport)
+        {
+            if(addTransport != null)
+            {
+                int lastTransportId = _context.Transport.OrderByDescending(t => t.Idtransport).First().Idtransport;
+                int lastHotelId = _context.Hotel.OrderByDescending(h => h.Idhotelroom).First().Idhotelroom;
+                Transport transport = _mapper.Map<Transport>(addTransport);
+                transport.Idtransport = lastTransportId > lastHotelId ? lastTransportId + 1 : lastHotelId + 1;
+                transport.Idlocationfrom = _context.Location.Where(l => l.Locationname.Equals(addTransport.Locationfrom)).Select(l => l.Idlocation).FirstOrDefault();
+                transport.Idlocationto = _context.Location.Where(l => l.Locationname.Equals(addTransport.Locationto)).Select(l => l.Idlocation).FirstOrDefault();
+                if(transport.Idlocationfrom == 0)
+                {
+                    Location location = new Location();
+                    location.Idlocation = _context.Location.OrderByDescending(l => l.Idlocation).First().Idlocation + 1;
+                    location.Locationname = addTransport.Locationfrom;
+                    _context.Location.Add(location);
+                    _context.SaveChanges();
+                    transport.Idlocationfrom = location.Idlocation;
+
+                }
+                if (transport.Idlocationto == 0)
+                {
+                    Location location = new Location();
+                    location.Idlocation = _context.Location.OrderByDescending(l => l.Idlocation).First().Idlocation + 1;
+                    location.Locationname = addTransport.Locationto;
+                    _context.Location.Add(location);
+                    transport.Idlocationto = location.Idlocation;
+                }
+                _context.Transport.Add(transport);
+                return true;
+            }
+            return false;
+        }
     }
 }

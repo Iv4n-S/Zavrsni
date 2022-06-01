@@ -145,10 +145,13 @@ function TransportSearchForm(props) {
                 transportTypesId.push(type.idtransporttype);
             }
 
+            var locationFromCapitalized = locationFromSearch[0].toUpperCase() + locationFromSearch.substring(1);
+            var locationToCapitalize = locationToSearch[0].toUpperCase() + locationToSearch.substring(1);
+
             const body = `{
                 "SelectedDate": ${travelDateParsed},
-                "LocationFrom": "${locationFromSearch}",
-                "LocationTo": "${locationToSearch}",
+                "LocationFrom": "${locationFromCapitalized}",
+                "LocationTo": "${locationToCapitalize}",
                 "TransportTypes": [${transportTypesId}]
             }`;
     

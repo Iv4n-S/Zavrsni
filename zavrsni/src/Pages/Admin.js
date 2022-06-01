@@ -9,6 +9,8 @@ import AdminTransportSearch from "../Components/AdminTransportSearch";
 import UsersTransports from "../Components/UsersTransports";
 import { NETWORK_CONFIG, API_CONFIG } from "../AppData/Constants";
 import UsersHotels from "../Components/UsersHotels";
+import HotelSearchForm from "../Components/HotelSearchForm";
+import AddTransportForm from "../Components/AddTransportForm";
 
 function Admin(props) {
     const [transportOption, setTransportOption] = React.useState(false);
@@ -127,7 +129,7 @@ function Admin(props) {
                             </div>
                             {addTransportOption &&
                                 <div className="flex justify-center w-full">
-                                    Add Transport
+                                    <AddTransportForm/>
                                 </div>
                             }
                             {removeTransportOption && 
@@ -201,7 +203,9 @@ function Admin(props) {
                             </div>
                             {addHotelOption &&
                                 <div className="flex justify-center w-full">
-                                    Add Hotel
+                                    <Card className="flex justify-center">
+                                        <HotelSearchForm/>
+                                    </Card>
                                 </div>
                             }
                             {removeHotelOption &&

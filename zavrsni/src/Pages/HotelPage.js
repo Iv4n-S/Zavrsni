@@ -7,6 +7,7 @@ import Card from "../Components/Card";
 import ReactStars from "react-rating-stars-component";
 import { LocationMarkerIcon, UserIcon } from "@heroicons/react/solid";
 import Button from "@restart/ui/esm/Button";
+import ClipLoader  from "react-spinners/ClipLoader";
 
 
 function HotelPage(props) {
@@ -17,6 +18,7 @@ function HotelPage(props) {
     const [hotelRooms, setHotelRooms] = React.useState([]);
     const [selectedHotelRoom, setSelectedHotelRoom] = React.useState({hotelroomcapacity: 0});
     const [error, setError] = React.useState();
+    const [loading, setLoading] = React.useState(false);
 
 
     React.useEffect(() => { 
@@ -83,6 +85,8 @@ function HotelPage(props) {
             setError("Selecting room capacity is required!")
         }
         else {
+            setLoading(true);
+
             const body = `{
                 "IdHotelRoom": ${selectedHotelRoom.idhotelroom},
                 "IdHotel": ${selectedHotelRoom.idHotel},
@@ -154,6 +158,9 @@ function HotelPage(props) {
                             <HotelDateSelectionForm setSelectedDates={setSelectedDates} GetHotelRooms={GetHotelRooms} setSelectedHotelRoom={setSelectedHotelRoom}/>
                         ) : (
                             <>
+                            <div className="flex justify-center">
+                                <ClipLoader color="#06b6d4" loading={loading} size={150} />
+                            </div>
                         {hotelRooms == undefined ? (
                                 <>
                                     <HotelDateSelectionForm setSelectedDates={setSelectedDates} GetHotelRooms={GetHotelRooms} setSelectedHotelRoom={setSelectedHotelRoom}/>
@@ -192,7 +199,7 @@ function HotelPage(props) {
                                         </Card>
                                     </div>
                                 </>
-                                )}
+                            )}
                             <div className="flex justify-center">
                                 {error && (
                                     <div className="border-red-100 rounded p-2 text-red-700 mb-2 bg-red-100 md:w-3/4 w-auto">

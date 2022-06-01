@@ -5,6 +5,7 @@ import Card from "../Components/Card";
 import TransportSearchForm from "../Components/TransportSearchForm";
 import TransportList from "../Components/TransportList";
 import { NETWORK_CONFIG, API_CONFIG } from "../AppData/Constants";
+import ClipLoader  from "react-spinners/ClipLoader";
 
 function Transport(props) {
     let navigate = useNavigate();
@@ -13,6 +14,7 @@ function Transport(props) {
     const [selectedTransport, setSelectedTransport] = React.useState(null);
     const [error, setError] = React.useState("");
     let location = useLocation();
+    const [loading, setLoading] = React.useState(false);
 
     React.useEffect(() => {
         if(location.state != undefined) {
@@ -36,6 +38,7 @@ function Transport(props) {
             setError("Selecting departure time is required!")
         }
         else {
+            setLoading(true);
             const body = `{
                 "IdTransport": ${selectedTransport.idtransport},
                 "SelectedDate": ${selectedDate}
@@ -72,6 +75,9 @@ function Transport(props) {
         <div className="flex flex-col justify-center">
             <div className="z-40">
                 <TransportSearchForm setFilteredTransports={setFilteredTransports} setSelectedDate={setSelectedDate} />
+            </div>
+            <div className="flex justify-center">
+                <ClipLoader color="#06b6d4" loading={loading} size={150} />
             </div>
             <div className="flex justify-center">
                 {filteredTransports == undefined ? (<></>) : (

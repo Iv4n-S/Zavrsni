@@ -1,9 +1,7 @@
 import React from "react";
 import { API_CONFIG, NETWORK_CONFIG } from "../AppData/Constants";
-import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
-import PostImage from "./[temp]PostImage";
+import { ScrollMenu } from "react-horizontal-scrolling-menu";
 import HotelInScrollList from "../Components/HotelInScrollList";
-import {LocationMarkerIcon} from "@heroicons/react/solid";
 
 
 function Home() {

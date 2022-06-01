@@ -1,11 +1,9 @@
 import React from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { NETWORK_CONFIG, API_CONFIG } from "./AppData/Constants";
 import Header from './Header';
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Home from "./Pages/Home";
-import PostImage from "./Pages/[temp]PostImage";
 import UserPage from "./Pages/UserPage";
 import Hotels from "./Pages/Hotels";
 import HotelPage from "./Pages/HotelPage";
@@ -54,10 +52,10 @@ function App() {
                         <Route path="/register" element={<Register setLoggedIn={setIsLoggedIn} />} />
                     </Routes>
                     <Routes>
-                        <Route path="/user" element={isLoggedIn  ? <UserPage /> : <Navigate to="/" replace />} />
+                        <Route path="/user" element={JSON.parse(localStorage.getItem('user')) != undefined  ? <UserPage /> : <Navigate to="/" replace />} />
                     </Routes>
                     <Routes>
-                        <Route path="/usersBookings" element={isLoggedIn  ? <UsersBookings /> : <Navigate to="/" replace />} />
+                        <Route path="/usersBookings" element={JSON.parse(localStorage.getItem('user')) != undefined  ? <UsersBookings /> : <Navigate to="/" replace />} />
                     </Routes>
                     <Routes>
                         <Route path="/transport" element={<Transport />} />
@@ -69,7 +67,7 @@ function App() {
                         <Route path="/hotelpage" element={<HotelPage />} />
                     </Routes>
                     <Routes>
-                        <Route path="/admin" element={isLoggedIn  ? (JSON.parse(localStorage.getItem('user')).role == "admin" ? <Admin /> 
+                        <Route path="/admin" element={JSON.parse(localStorage.getItem('user')) != undefined ? (JSON.parse(localStorage.getItem('user')).role == "admin" ? <Admin /> 
                         : <Navigate to="/" replace />) : <Navigate to="/" replace />} />
                     </Routes>
                 </div>

@@ -154,6 +154,7 @@ function AddTransportForm(props) {
         }
         else {
             setError("");
+            
             var locationFromCapitalized = locationFrom[0].toUpperCase() + locationFrom.substring(1);
             var locationToCapitalize = locationTo[0].toUpperCase() + locationTo.substring(1);
 

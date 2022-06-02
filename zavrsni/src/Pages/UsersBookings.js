@@ -129,7 +129,7 @@ function UsersBookings(props) {
                                                 </div>
                                                 {value.active ? (
                                                     <div className="flex justify-center mt-1">
-                                                        <Button label="Cancel Booking" className="bg-[#F45B69]" onClick={() => CancelBooking(value.idbooking)} />
+                                                        <Button label="Cancel Booking" className="text-white bg-[#F03A47]" onClick={() => CancelBooking(value.idbooking)} />
                                                     </div>
                                                 ) : (<></>)}
                                             </Card>
@@ -169,7 +169,7 @@ function UsersBookings(props) {
                                                 </div>
                                                 {value.active ? (
                                                     <div className="flex justify-center mt-1">
-                                                        <Button label="Cancel Booking" className="bg-[#F45B69]" onClick={() => CancelBooking(value.idbooking)} />
+                                                        <Button label="Cancel Booking" className="text-white bg-[#F03A47]" onClick={() => CancelBooking(value.idbooking)} />
                                                     </div>
                                                 ) : (<></>)}
                                             </Card>

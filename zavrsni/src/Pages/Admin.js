@@ -152,7 +152,7 @@ function Admin(props) {
                                                                     <UsersTransports transport={value}/>
                                                                 </div>
                                                                 <div className="flex justify-center mt-1">
-                                                                    <Button label="Delete Transport" className="bg-[#F45B69]" 
+                                                                    <Button label="Delete Transport" className="text-white bg-[#F03A47]" 
                                                                         onClick={() =>  {
                                                                             DeleteTransport(value.idtransport);
                                                                             filteredTransport.transports.splice(filteredTransport.transports.indexOf(value), 1);
@@ -221,7 +221,7 @@ function Admin(props) {
                                                                 <UsersHotels hotel={filteredHotel}/>
                                                             </div>
                                                             <div className="flex justify-center mt-1">
-                                                                <Button label="Delete Hotel" className="bg-[#F45B69]" 
+                                                                <Button label="Delete Hotel" className="text-white bg-[#F03A47]" 
                                                                     onClick={() =>  {
                                                                         DeleteHotel(filteredHotel.idhotelroom);
                                                                         filteredHotels.splice(filteredHotels.indexOf(filteredHotel), 1);

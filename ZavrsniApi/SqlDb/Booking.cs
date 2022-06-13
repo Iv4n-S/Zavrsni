@@ -15,15 +15,18 @@ namespace ZavrsniApi
         }
 
         public int Idbooking { get; set; }
-        public int Idbookingitem { get; set; }
         public DateTime Timecreated { get; set; }
         public int Idbookingtype { get; set; }
         public int Iduser { get; set; }
         public int Idtimeslot { get; set; }
         public int? Idhotel { get; set; }
+        public int? Idhotelroom { get; set; }
+        public int? Idtransport { get; set; }
 
         public virtual Bookingtype IdbookingtypeNavigation { get; set; }
+        public virtual Hotel IdhotelroomNavigation { get; set; }
         public virtual Timeslots IdtimeslotNavigation { get; set; }
+        public virtual Transport IdtransportNavigation { get; set; }
         public virtual Userdata IduserNavigation { get; set; }
         public virtual ICollection<Occupieditem> Occupieditem { get; set; }
     }

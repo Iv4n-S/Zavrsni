@@ -9,6 +9,11 @@ namespace ZavrsniApi
 {
     public partial class Transport
     {
+        public Transport()
+        {
+            Booking = new HashSet<Booking>();
+        }
+
         public int Idtransport { get; set; }
         public string Transportname { get; set; }
         public int Idtransporttype { get; set; }
@@ -20,5 +25,6 @@ namespace ZavrsniApi
         public virtual Location IdlocationfromNavigation { get; set; }
         public virtual Location IdlocationtoNavigation { get; set; }
         public virtual Transporttypes IdtransporttypeNavigation { get; set; }
+        public virtual ICollection<Booking> Booking { get; set; }
     }
 }

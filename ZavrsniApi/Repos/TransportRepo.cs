@@ -32,7 +32,7 @@ namespace ZavrsniApi.Repos
                 _context.Booking.Add(new Booking
                 {
                     Idbooking = bookingId,
-                    Idbookingitem = booking.IdTransport,
+                    Idtransport = booking.IdTransport,
                     Timecreated = DateTime.Now,
                     Idbookingtype = 1,
                     Iduser = booking.IdUser,

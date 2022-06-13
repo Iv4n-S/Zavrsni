@@ -31,10 +31,10 @@ namespace ZavrsniApi.Repos
             {
                 if(booking.Idbookingtype == GetBookingTypeId("transport"))
                 {
-                    Transport transport = _context.Transport.Where(t => t.Idtransport == booking.Idbookingitem).FirstOrDefault();
+                    Transport transport = _context.Transport.Where(t => t.Idtransport == booking.Idtransport).FirstOrDefault();
                     TransportBookingDto transportBooking = _mapper.Map<TransportBookingDto>(transport);
                     transportBooking.Idbooking = booking.Idbooking;
-                    transportBooking.Idbookingitem = booking.Idbookingitem;
+                    transportBooking.Idtransport = booking.Idtransport.Value;
                     transportBooking.Timecreated = booking.Timecreated;
                     transportBooking.Idbookingtype = booking.Idbookingtype;
                     transportBooking.Idtimeslot = booking.Idtimeslot;
@@ -58,10 +58,10 @@ namespace ZavrsniApi.Repos
                 }
                 else if (booking.Idbookingtype == GetBookingTypeId("hotel"))
                 {
-                    Hotel hotel = _context.Hotel.Where(h => h.Idhotelroom == booking.Idbookingitem).FirstOrDefault();
+                    Hotel hotel = _context.Hotel.Where(h => h.Idhotelroom == booking.Idhotelroom).FirstOrDefault();
                     HotelBookingDto hotelBooking = _mapper.Map<HotelBookingDto>(hotel);
                     hotelBooking.Idbooking = booking.Idbooking;
-                    hotelBooking.Idbookingitem = booking.Idbookingitem;
+                    hotelBooking.Idhotelroom = booking.Idhotelroom.Value;
                     hotelBooking.Timecreated = booking.Timecreated;
                     hotelBooking.Idbookingtype = booking.Idbookingtype;
                     hotelBooking.Idtimeslot = booking.Idtimeslot;

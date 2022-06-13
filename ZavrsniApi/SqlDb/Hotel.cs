@@ -9,6 +9,11 @@ namespace ZavrsniApi
 {
     public partial class Hotel
     {
+        public Hotel()
+        {
+            Booking = new HashSet<Booking>();
+        }
+
         public int Idhotelroom { get; set; }
         public string Hotelname { get; set; }
         public int Hotelroomcapacity { get; set; }
@@ -18,5 +23,6 @@ namespace ZavrsniApi
         public int IdHotel { get; set; }
 
         public virtual Location IdlocationNavigation { get; set; }
+        public virtual ICollection<Booking> Booking { get; set; }
     }
 }

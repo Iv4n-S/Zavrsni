@@ -157,7 +157,7 @@ namespace ZavrsniApi.Repos
                 {
                     booking = new Booking();
                     booking.Idbooking = bookingId++;
-                    booking.Idbookingitem = bookingHotel.IdHotelRoom;
+                    booking.Idhotelroom = bookingHotel.IdHotelRoom;
                     booking.Timecreated = DateTime.Now;
                     booking.Idbookingtype = 2;
                     booking.Iduser = bookingHotel.IdUser;

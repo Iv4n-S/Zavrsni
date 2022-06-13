@@ -5,7 +5,7 @@ namespace ZavrsniApi.DtoModels
     public class TransportBookingDto
     {
         public int Idbooking { get; set; }
-        public int Idbookingitem { get; set; }
+        public int Idtransport { get; set; }
         public DateTime Timecreated { get; set; }
         public int Idbookingtype { get; set; }
         public int Idtimeslot { get; set; }

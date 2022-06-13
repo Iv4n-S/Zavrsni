@@ -40,7 +40,7 @@ namespace ZavrsniApi.Controllers
                 {
                     foreach (var hotel in result.HotelBookings)
                     {
-                        var image = (OkObjectResult)GetImages(hotel.Idbookingitem).Result;
+                        var image = (OkObjectResult)GetImages(hotel.Idhotelroom).Result;
                         hotel.Image = (IEnumerable<ReturnImage>)image.Value;
                     }
                     return Ok(result);

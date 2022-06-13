@@ -52,13 +52,15 @@ namespace ZavrsniApi
                     .HasColumnName("idbooking")
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.Idbookingitem).HasColumnName("idbookingitem");
-
                 entity.Property(e => e.Idbookingtype).HasColumnName("idbookingtype");
 
                 entity.Property(e => e.Idhotel).HasColumnName("idhotel");
 
+                entity.Property(e => e.Idhotelroom).HasColumnName("idhotelroom");
+
                 entity.Property(e => e.Idtimeslot).HasColumnName("idtimeslot");
+
+                entity.Property(e => e.Idtransport).HasColumnName("idtransport");
 
                 entity.Property(e => e.Iduser).HasColumnName("iduser");
 
@@ -70,11 +72,21 @@ namespace ZavrsniApi
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("booking_idbookingtype_fkey");
 
+                entity.HasOne(d => d.IdhotelroomNavigation)
+                    .WithMany(p => p.Booking)
+                    .HasForeignKey(d => d.Idhotelroom)
+                    .HasConstraintName("booking_idhotelroom_fkey");
+
                 entity.HasOne(d => d.IdtimeslotNavigation)
                     .WithMany(p => p.Booking)
                     .HasForeignKey(d => d.Idtimeslot)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("booking_idtimeslot_fkey");
+
+                entity.HasOne(d => d.IdtransportNavigation)
+                    .WithMany(p => p.Booking)
+                    .HasForeignKey(d => d.Idtransport)
+                    .HasConstraintName("booking_idtransport_fkey");
 
                 entity.HasOne(d => d.IduserNavigation)
                     .WithMany(p => p.Booking)

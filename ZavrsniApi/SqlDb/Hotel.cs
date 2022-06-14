@@ -12,6 +12,7 @@ namespace ZavrsniApi
         public Hotel()
         {
             Booking = new HashSet<Booking>();
+            Occupieditem = new HashSet<Occupieditem>();
         }
 
         public int Idhotelroom { get; set; }
@@ -24,5 +25,6 @@ namespace ZavrsniApi
 
         public virtual Location IdlocationNavigation { get; set; }
         public virtual ICollection<Booking> Booking { get; set; }
+        public virtual ICollection<Occupieditem> Occupieditem { get; set; }
     }
 }

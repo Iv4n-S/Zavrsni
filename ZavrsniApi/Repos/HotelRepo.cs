@@ -62,7 +62,7 @@ namespace ZavrsniApi.Repos
                     bool available = true;
                     foreach (var date in timeSlots)
                     {
-                        if (_context.Occupieditem.Where(i => i.Idtimeslot == date && i.Idbookingitem == hotelRoom.Idhotelroom).Any())
+                        if (_context.Occupieditem.Where(i => i.Idtimeslot == date && i.Idhotelroom == hotelRoom.Idhotelroom).Any())
                         {
                             available = false;
                         }
@@ -117,7 +117,7 @@ namespace ZavrsniApi.Repos
                     bool available = true;
                     foreach (var date in timeSlots)
                     {
-                        if (_context.Occupieditem.Where(i => i.Idtimeslot == date && i.Idbookingitem == hotelInLocation.Idhotelroom).Any())
+                        if (_context.Occupieditem.Where(i => i.Idtimeslot == date && i.Idhotelroom == hotelInLocation.Idhotelroom).Any())
                         {
                             available = false;
                         }
@@ -146,7 +146,7 @@ namespace ZavrsniApi.Repos
             }
             IEnumerable<int> timeSlots = _context.Timeslots.Where(t => bookingHotel.SelectedDates.Contains(t.Itemdate))
                     .Select(t => t.Idtimeslot).ToList();
-            bool exists = _context.Occupieditem.Where(o => o.Idbookingitem == bookingHotel.IdHotelRoom && timeSlots.Contains(o.Idtimeslot)).Any();
+            bool exists = _context.Occupieditem.Where(o => o.Idhotelroom == bookingHotel.IdHotelRoom && timeSlots.Contains(o.Idtimeslot)).Any();
             if (!exists)
             {
                 var bookingId = GetLastBookingId() + 1;
@@ -164,7 +164,7 @@ namespace ZavrsniApi.Repos
                     booking.Idtimeslot = timeSlot;
                     booking.Idhotel = bookingHotel.IdHotel;
                     _context.Booking.Add(booking);
-                    OccupieHotel(new OccupieItemDto { OccupiedItemId=occupiedItemId++, IdBookingItem = bookingHotel.IdHotelRoom, IdBooking = booking.Idbooking, IdTimeSlot = timeSlot });
+                    OccupieHotel(new OccupieItemDto { OccupiedItemId=occupiedItemId++, Idhotelroom = bookingHotel.IdHotelRoom, IdBooking = booking.Idbooking, IdTimeSlot = timeSlot });
                 }
                 return true;
             }
@@ -181,7 +181,7 @@ namespace ZavrsniApi.Repos
             _context.Occupieditem.Add(new Occupieditem
             {
                 Idoccupieditem = booking.OccupiedItemId,
-                Idbookingitem = booking.IdBookingItem,
+                Idhotelroom = booking.Idhotelroom,
                 Idbooking = booking.IdBooking,
                 Idtimeslot = booking.IdTimeSlot,
             });

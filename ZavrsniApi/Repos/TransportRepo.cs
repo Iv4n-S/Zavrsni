@@ -26,7 +26,7 @@ namespace ZavrsniApi.Repos
             }
             int timeSlot = _context.Timeslots.Where(t => booking.SelectedDate.Equals(t.Itemdate)).Select(t => t.Idtimeslot).FirstOrDefault();
             Transport selectedTransport = _context.Transport.Where(t => t.Idtransport == booking.IdTransport).FirstOrDefault();
-            if(_context.Occupieditem.Where(o => o.Idbookingitem == booking.IdTransport && o.Idtimeslot == timeSlot).Count() < selectedTransport.Capacity)
+            if(_context.Occupieditem.Where(o => o.Idtransport == booking.IdTransport && o.Idtimeslot == timeSlot).Count() < selectedTransport.Capacity)
             {
                 var bookingId = GetLastBookingId() + 1;
                 _context.Booking.Add(new Booking
@@ -39,7 +39,7 @@ namespace ZavrsniApi.Repos
                     Idtimeslot = timeSlot,
                     Idhotel = null
                 });
-                OccupieTransport(new OccupieItemDto { IdBookingItem = booking.IdTransport, IdBooking = bookingId, IdTimeSlot = timeSlot });
+                OccupieTransport(new OccupieItemDto { Idtransport = booking.IdTransport, IdBooking = bookingId, IdTimeSlot = timeSlot });
                 
                 return true;
             }
@@ -56,7 +56,7 @@ namespace ZavrsniApi.Repos
             var occupiedItemId = GetLastOccupiedItemId() + 1;
             _context.Occupieditem.Add(new Occupieditem {
                 Idoccupieditem = occupiedItemId,
-                Idbookingitem = booking.IdBookingItem,
+                Idtransport = booking.Idtransport,
                 Idbooking = booking.IdBooking,
                 Idtimeslot = booking.IdTimeSlot,
             }); 
@@ -75,7 +75,7 @@ namespace ZavrsniApi.Repos
 
             foreach (var transport in transportsMapped)
             {
-                if (_context.Occupieditem.Where(o => o.Idbookingitem == transport.Idtransport && o.Idtimeslot == travelDate).Count() < transport.Capacity)
+                if (_context.Occupieditem.Where(o => o.Idtransport == transport.Idtransport && o.Idtimeslot == travelDate).Count() < transport.Capacity)
                 {
                     transport.LocationFrom = filters.LocationFrom;
                     transport.LocationTo = filters.LocationTo;

@@ -10,11 +10,14 @@ namespace ZavrsniApi
     public partial class Occupieditem
     {
         public int Idoccupieditem { get; set; }
-        public int Idbookingitem { get; set; }
         public int Idbooking { get; set; }
         public int Idtimeslot { get; set; }
+        public int? Idhotelroom { get; set; }
+        public int? Idtransport { get; set; }
 
         public virtual Booking IdbookingNavigation { get; set; }
+        public virtual Hotel IdhotelroomNavigation { get; set; }
         public virtual Timeslots IdtimeslotNavigation { get; set; }
+        public virtual Transport IdtransportNavigation { get; set; }
     }
 }

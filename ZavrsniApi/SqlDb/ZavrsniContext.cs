@@ -197,9 +197,11 @@ namespace ZavrsniApi
 
                 entity.Property(e => e.Idbooking).HasColumnName("idbooking");
 
-                entity.Property(e => e.Idbookingitem).HasColumnName("idbookingitem");
+                entity.Property(e => e.Idhotelroom).HasColumnName("idhotelroom");
 
                 entity.Property(e => e.Idtimeslot).HasColumnName("idtimeslot");
+
+                entity.Property(e => e.Idtransport).HasColumnName("idtransport");
 
                 entity.HasOne(d => d.IdbookingNavigation)
                     .WithMany(p => p.Occupieditem)
@@ -207,11 +209,21 @@ namespace ZavrsniApi
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("occupieditem_idbooking_fkey");
 
+                entity.HasOne(d => d.IdhotelroomNavigation)
+                    .WithMany(p => p.Occupieditem)
+                    .HasForeignKey(d => d.Idhotelroom)
+                    .HasConstraintName("occupieditem_idhotelroom_fkey");
+
                 entity.HasOne(d => d.IdtimeslotNavigation)
                     .WithMany(p => p.Occupieditem)
                     .HasForeignKey(d => d.Idtimeslot)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("occupieditem_idtimeslot_fkey");
+
+                entity.HasOne(d => d.IdtransportNavigation)
+                    .WithMany(p => p.Occupieditem)
+                    .HasForeignKey(d => d.Idtransport)
+                    .HasConstraintName("occupieditem_idtransport_fkey");
             });
 
             modelBuilder.Entity<Timeslots>(entity =>
